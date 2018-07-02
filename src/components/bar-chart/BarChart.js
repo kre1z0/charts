@@ -20,18 +20,6 @@ const Bar = styled.div`
 `;
 
 class BarChart extends Component {
-  _getBarHeight = (value, layerName) => {
-    const { data } = this.props;
-
-    if (value && !contain) {
-      const percent = (value * 100) / maxCount;
-      if (percent < 2) return 2;
-      else return (value * 100) / maxCount;
-    } else {
-      return 0;
-    }
-  };
-
   render() {
     const { data } = this.props;
 

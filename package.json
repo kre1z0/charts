@@ -2,7 +2,6 @@
   "name": "react-charts",
   "version": "1.0.0",
   "private": false,
-  "homepage": "http://kre1z0.github.io/charts",
   "repository": {
     "type": "git",
     "url": "https://github.com/kre1z0/charts.git"
