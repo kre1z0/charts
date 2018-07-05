@@ -1,8 +1,6 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import { SvgRender } from "../painter/SvgRender";
-
 import styles from "./donut-chart.scss";
 
 const DEFAULT_COLORS = [
