@@ -26,7 +26,7 @@ export class DonutChart extends Component {
     colors: PropTypes.arrayOf(PropTypes.string),
     fill: PropTypes.string,
     stroke: PropTypes.string,
-    responsive: PropTypes.string,
+    responsive: PropTypes.bool,
   };
 
   static defaultProps = {
