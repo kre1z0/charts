@@ -78,6 +78,7 @@ export class DonutChart extends Component {
     let endAngle = 0;
 
     const paths = [];
+    const labels = [];
 
     convertValuesToDeg(data).map((value, index) => {
       endAngle += value;
@@ -115,6 +116,18 @@ export class DonutChart extends Component {
           viewBox={[0, 0, r2, r2].join(" ")}
         />
         {paths}
+        <text x="20" y="35">
+          Мой
+        </text>
+        <text x="60" y="35">
+          кот
+        </text>
+        <text x="60" y="55">
+          очень
+        </text>
+        <text x="100" y="55">
+          Сердит!
+        </text>
       </svg>
     );
   }

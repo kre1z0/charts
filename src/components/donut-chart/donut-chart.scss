@@ -1,26 +1,8 @@
 .donutChart {
   position: relative;
-  width: 44vw;
-  height: 44vh;
+  width: 44%;
+  height: 44%;
   svg {
     position: relative;
   }
-}
-
-.incision {
-  border-radius: 50%;
-  clip: rect(0px, 200px, 200px, 100px);
-  height: 100%;
-  position: absolute;
-  width: 100%;
-}
-
-.item {
-  border-radius: 50%;
-  clip: rect(0px, 100px, 200px, 0px);
-  height: 100%;
-  position: absolute;
-  width: 100%;
-  font-family: monospace;
-  font-size: 1.5rem;
 }
