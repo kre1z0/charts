@@ -1,40 +1,33 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-import styles from "./donut-chart.scss";
+import { Legend } from "../../components/legend/Legend";
+import { coordsFromAngle, convertValuesToDeg } from "../../utils/number";
+import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
-const DEFAULT_COLORS = [
-  "rgba(231,76,60,1)",
-  "rgba(169,50,38,1)",
-  "rgba(171,96,202,1)",
-  "rgba(125,60,152,1)",
-  "rgba(59,150,209,1)",
-  "rgba(20,95,144,1)",
-  "rgba(36,190,160,1)",
-  "rgba(12,146,120,1)",
-  "rgba(241,196,15,1)",
-  "rgba(230,126,34,1)",
-];
+import styles from "./donut-chart.scss";
 
 export class DonutChart extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.number),
-    size: PropTypes.number,
+    diameter: PropTypes.number,
     strokeWidth: PropTypes.number,
     colors: PropTypes.arrayOf(PropTypes.string),
     fill: PropTypes.string,
-    stroke: PropTypes.string,
     responsive: PropTypes.bool,
+    tooltips: PropTypes.bool,
+    textProps: PropTypes.object,
   };
 
   static defaultProps = {
     data: [144, 27, 88, 12],
-    size: 200,
-    strokeWidth: 30,
     colors: DEFAULT_COLORS,
-    fill: "#fff",
-    stroke: "green",
+    diameter: 200,
+    strokeWidth: 32,
+    fill: "transparent",
     responsive: false,
+    tooltips: true,
+    textProps: {},
   };
 
   polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -60,19 +53,22 @@ export class DonutChart extends Component {
   }
 
   renderSVG() {
-    const { data, strokeWidth, stroke, fill, colors, responsive } = this.props;
+    const {
+      data,
+      colors,
+      strokeWidth,
+      diameter,
+      fill,
+      responsive,
+      textProps,
+      tooltips,
+    } = this.props;
 
-    const size = this.props.size - strokeWidth;
+    const size = diameter - strokeWidth;
 
     const radius = size / 2;
     const r2 = size + strokeWidth;
     const c = radius + strokeWidth / 2;
-
-    const sum = data.reduce((a, b) => a + b, 0);
-
-    const convertValuesToDeg = values => {
-      return values.map(n => parseFloat(((360 * n) / sum).toFixed(1)));
-    };
 
     let startAngle = 0;
     let endAngle = 0;
@@ -80,11 +76,29 @@ export class DonutChart extends Component {
     const paths = [];
     const labels = [];
 
-    convertValuesToDeg(data).map((value, index) => {
+    convertValuesToDeg(data).forEach((value, index) => {
       endAngle += value;
+
+      const centerPathAngle = parseFloat((startAngle + (endAngle - startAngle) / 2).toFixed(1));
+
+      const { x, y } = coordsFromAngle(centerPathAngle, diameter / 2, radius);
+
+      tooltips &&
+        labels.push(
+          <text
+            key={`${value}-${index}-text`}
+            x={x}
+            y={y}
+            textAnchor="middle"
+            alignmentBaseline="central"
+            {...textProps}
+          >
+            {data[index]}
+          </text>,
+        );
       paths.push(
         <path
-          key={`${value}-${index}`}
+          key={`${value}-${index}-path`}
           d={this.describeArc(c, c, radius, startAngle, endAngle)}
           fill="rgb(0,0,0)"
           fillOpacity={0}
@@ -105,40 +119,28 @@ export class DonutChart extends Component {
         viewBox={[0, 0, r2, r2].join(" ")}
       >
         <circle
-          r={radius}
+          r={diameter / 2}
           cx={c}
           cy={c}
-          stroke={stroke}
-          strokeWidth={strokeWidth}
           fill={fill}
           width={r2}
           height={r2}
           viewBox={[0, 0, r2, r2].join(" ")}
         />
         {paths}
-        <text x="20" y="35">
-          Мой
-        </text>
-        <text x="60" y="35">
-          кот
-        </text>
-        <text x="60" y="55">
-          очень
-        </text>
-        <text x="100" y="55">
-          Сердит!
-        </text>
+        {labels}
       </svg>
     );
   }
 
   render() {
-    const { children } = this.props;
+    const { children, data, colors } = this.props;
 
     return (
       <div className={styles.donutChart}>
         {this.renderSVG()}
         {children}
+        <Legend data={data} colors={colors} />
       </div>
     );
   }

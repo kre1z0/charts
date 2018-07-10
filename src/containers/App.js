@@ -9,7 +9,11 @@ class App extends Component {
   render() {
     return (
       <div className="app-container">
-        <DonutChart data={[144, 25, 89, 44]} responsive>
+        <DonutChart
+          data={[144, 25, 89, 44, 200, 65, 80]}
+          responsive
+          textProps={{ className: styles.label }}
+        >
           <img
             className={styles.kappa}
             src="https://vignette.wikia.nocookie.net/chillsonicfanon/images/5/5f/Kappa_emote.png/revision/latest?cb=20151006190205"
