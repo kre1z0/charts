@@ -1,0 +1,40 @@
+.legend {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 20px;
+}
+
+.item {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  transition: all 200ms ease;
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.colorBlock {
+  border-radius: 4px;
+  width: 24px;
+  height: 24px;
+}
+
+.label {
+  padding-left: 5px;
+  flex-grow: 1;
+}
+
+.strike {
+  opacity: 0.4;
+  &:before {
+    background-color: rgba(51, 51, 51, 0.8);
+    position: absolute;
+    content: '';
+    width: 100%;
+    height: 2px;
+  }
+}

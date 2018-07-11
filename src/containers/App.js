@@ -10,16 +10,20 @@ class App extends Component {
     return (
       <div className="app-container">
         <DonutChart
-          data={[144, 25, 89, 44, 200, 65, 80]}
           responsive
           textProps={{ className: styles.label }}
-        >
-          <img
-            className={styles.kappa}
-            src="https://vignette.wikia.nocookie.net/chillsonicfanon/images/5/5f/Kappa_emote.png/revision/latest?cb=20151006190205"
-            alt="kappa"
-          />
-        </DonutChart>
+          svgChildren={
+            <image
+              x="150"
+              y="150"
+              height="100%"
+              width="auto"
+              className={styles.kappa}
+              xlinkHref="https://vignette.wikia.nocookie.net/chillsonicfanon/images/5/5f/Kappa_emote.png/revision/latest?cb=20151006190205"
+              alt="kappa"
+            />
+          }
+        />
         {/*<div className="bar-1">*/}
         {/*<BarChart data={[122, 144, 158, 56]} />*/}
         {/*</div>*/}

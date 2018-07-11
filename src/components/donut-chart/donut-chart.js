@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
+import { browser } from "../../utils/utils";
 import { Legend } from "../../components/legend/Legend";
 import { coordsFromAngle, convertValuesToDeg } from "../../utils/number";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
@@ -10,6 +11,7 @@ import styles from "./donut-chart.scss";
 export class DonutChart extends Component {
   static propTypes = {
     data: PropTypes.arrayOf(PropTypes.number),
+    labels: PropTypes.arrayOf(PropTypes.string),
     diameter: PropTypes.number,
     strokeWidth: PropTypes.number,
     colors: PropTypes.arrayOf(PropTypes.string),
@@ -17,17 +19,38 @@ export class DonutChart extends Component {
     responsive: PropTypes.bool,
     tooltips: PropTypes.bool,
     textProps: PropTypes.object,
+    precision: PropTypes.number,
+    tooltip: PropTypes.bool,
+    stroke: PropTypes.string,
   };
 
   static defaultProps = {
-    data: [144, 27, 88, 12],
+    data: [60.74, 11.6, 10.4, 6.13, 3.49, 2.28, 1.4, 0.92, 0.73, 2.32],
+    labels: [
+      "Chrome",
+      "Opera",
+      "Firefox",
+      "Safari",
+      "Yandex Browser",
+      "IE",
+      "Android",
+      "Edge",
+      "Samsung Internet",
+      "Other",
+    ],
     colors: DEFAULT_COLORS,
     diameter: 200,
     strokeWidth: 32,
     fill: "transparent",
     responsive: false,
-    tooltips: true,
+    tooltip: true,
     textProps: {},
+    precision: 1,
+    stroke: "rgba(51, 51, 51, 0.2)",
+  };
+
+  state = {
+    turnOffValues: [],
   };
 
   polarToCartesian(centerX, centerY, radius, angleInDegrees) {
@@ -53,6 +76,7 @@ export class DonutChart extends Component {
   }
 
   renderSVG() {
+    const { turnOffValues } = this.state;
     const {
       data,
       colors,
@@ -61,8 +85,13 @@ export class DonutChart extends Component {
       fill,
       responsive,
       textProps,
-      tooltips,
+      tooltip,
+      precision,
+      stroke,
+      svgChildren,
     } = this.props;
+
+    const isIE11 = browser === "IE 11";
 
     const size = diameter - strokeWidth;
 
@@ -74,52 +103,83 @@ export class DonutChart extends Component {
     let endAngle = 0;
 
     const paths = [];
-    const labels = [];
+    const tooltips = [];
 
-    convertValuesToDeg(data).forEach((value, index) => {
+    const filteredData = data.filter((_, index) => !turnOffValues.some(value => value === index));
+    const filteredColors = colors.filter(
+      (_, index) => !turnOffValues.some(value => value === index),
+    );
+
+    convertValuesToDeg(filteredData).forEach((value, index, array) => {
       endAngle += value;
 
-      const centerPathAngle = parseFloat((startAngle + (endAngle - startAngle) / 2).toFixed(1));
+      const pathDeg = endAngle - startAngle;
+
+      const centerPathAngle = parseFloat((startAngle + pathDeg / 2).toFixed(1));
+
+      const arrayHasOneItem = array.length === 1;
 
       const { x, y } = coordsFromAngle(centerPathAngle, diameter / 2, radius);
 
-      tooltips &&
-        labels.push(
+      tooltip &&
+        pathDeg > 9 &&
+        tooltips.push(
           <text
             key={`${value}-${index}-text`}
             x={x}
-            y={y}
+            y={arrayHasOneItem ? coordsFromAngle(0, diameter / 2, radius).y : y}
             textAnchor="middle"
             alignmentBaseline="central"
             {...textProps}
           >
-            {data[index]}
+            {filteredData[index].toFixed(precision)}
           </text>,
         );
-      paths.push(
-        <path
-          key={`${value}-${index}-path`}
-          d={this.describeArc(c, c, radius, startAngle, endAngle)}
-          fill="rgb(0,0,0)"
-          fillOpacity={0}
-          stroke={colors[index] ? colors[index] : DEFAULT_COLORS[index]}
-          strokeWidth={strokeWidth}
-          width={r2}
-          height={r2}
-          viewBox={[0, 0, r2, r2].join(" ")}
-        />,
-      );
+
+      if (arrayHasOneItem) {
+        paths.push(
+          <circle
+            stroke={filteredColors[index] ? filteredColors[index] : DEFAULT_COLORS[index]}
+            strokeWidth={strokeWidth}
+            r={(diameter - strokeWidth) / 2}
+            cx={c}
+            cy={c}
+            fill={fill}
+            width={r2}
+            height={r2}
+            viewBox={[0, 0, r2, r2].join(" ")}
+          />,
+        );
+      } else {
+        paths.push(
+          <path
+            key={`${value}-${index}-path`}
+            d={this.describeArc(c, c, radius, startAngle, endAngle)}
+            fill="rgb(0,0,0)"
+            fillOpacity={0}
+            stroke={filteredColors[index] ? filteredColors[index] : DEFAULT_COLORS[index]}
+            strokeWidth={strokeWidth}
+            width={r2}
+            height={r2}
+            viewBox={[0, 0, r2, r2].join(" ")}
+          />,
+        );
+      }
+
       startAngle += value;
     });
 
     return (
       <svg
-        width={responsive ? "100%" : r2}
-        height={responsive ? "100%" : r2}
+        style={{ flex: isIE11 ? "0 1 auto" : "1 1" }}
+        width={responsive && !isIE11 ? "100%" : r2}
+        height={responsive && !isIE11 ? "100%" : r2}
         viewBox={[0, 0, r2, r2].join(" ")}
       >
         <circle
-          r={diameter / 2}
+          stroke={stroke}
+          strokeWidth={strokeWidth}
+          r={(diameter - strokeWidth) / 2}
           cx={c}
           cy={c}
           fill={fill}
@@ -128,19 +188,42 @@ export class DonutChart extends Component {
           viewBox={[0, 0, r2, r2].join(" ")}
         />
         {paths}
-        {labels}
+        {tooltips}
+        {svgChildren}
       </svg>
     );
   }
 
-  render() {
-    const { children, data, colors } = this.props;
+  onTurnOffValue = index => {
+    const { turnOffValues } = this.state;
+    const isContain = turnOffValues.some(value => value === index);
 
+    if (isContain) {
+      this.setState({
+        turnOffValues: turnOffValues.filter(value => value !== index),
+      });
+    } else {
+      this.setState({
+        turnOffValues: turnOffValues.concat(index),
+      });
+    }
+  };
+
+  render() {
+    const { turnOffValues } = this.state;
+    const { children, data, colors, labels } = this.props;
+    console.info("--> turnOffValues", turnOffValues);
     return (
       <div className={styles.donutChart}>
         {this.renderSVG()}
         {children}
-        <Legend data={data} colors={colors} />
+        <Legend
+          data={data}
+          colors={colors}
+          labels={labels}
+          turnOffValues={turnOffValues}
+          onTurnOffValue={this.onTurnOffValue}
+        />
       </div>
     );
   }

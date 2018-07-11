@@ -17,6 +17,12 @@
     "name": "Igor Ivchuk",
     "url": "https://github.com/kre1z0"
   },
+  "scripts": {
+    "start": "node scripts/start.js",
+    "build": "node scripts/build.js",
+    "auto-build": "npm && npm run build",
+    "deploy": "gh-pages -d build"
+  },
   "license": "MIT",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
@@ -70,12 +76,6 @@
     "webpack": "2.5.1",
     "webpack-dev-server": "2.4.5",
     "webpack-manifest-plugin": "1.1.0"
-  },
-  "scripts": {
-    "start": "node scripts/start.js",
-    "build": "node scripts/build.js",
-    "auto-build": "npm && npm run build",
-    "deploy": "gh-pages -d build"
   },
   "babel": {
     "presets": [

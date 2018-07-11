@@ -1,8 +1,5 @@
 .donutChart {
+  display: flex;
   position: relative;
-  width: 44%;
-  height: 44%;
-  svg {
-    position: relative;
-  }
+  align-items: center;
 }

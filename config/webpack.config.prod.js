@@ -53,7 +53,8 @@ module.exports = {
   // We generate sourcemaps in production. This is slow but gives good results.
   // You can exclude the *.map files from the build during deployment.
   devtool: "source-map",
-  entry: paths.appIndexJs,
+  // In production, we only want to load the polyfills and the app code.
+  entry: [require.resolve("./polyfills"), paths.appIndexJs],
   output: {
     // The build folder.
     path: paths.appBuild,
@@ -65,8 +66,7 @@ module.exports = {
     // We inferred the "public path" (such as / or /my-project) from homepage.
     publicPath: publicPath,
     // Point sourcemap entries to original disk location
-    devtoolModuleFilenameTemplate: info =>
-      path.relative(paths.appSrc, info.absoluteResourcePath),
+    devtoolModuleFilenameTemplate: info => path.relative(paths.appSrc, info.absoluteResourcePath),
   },
   resolve: {
     // This allows you to set a fallback for where Webpack should look for modules.
