@@ -22,6 +22,7 @@ export class DonutChart extends Component {
     precision: PropTypes.number,
     tooltip: PropTypes.bool,
     stroke: PropTypes.string,
+    style: PropTypes.object,
   };
 
   static defaultProps = {
@@ -45,7 +46,7 @@ export class DonutChart extends Component {
     responsive: false,
     tooltip: true,
     textProps: {},
-    precision: 1,
+    precision: 0,
     stroke: "rgba(51, 51, 51, 0.2)",
   };
 
@@ -139,7 +140,8 @@ export class DonutChart extends Component {
       if (arrayHasOneItem) {
         paths.push(
           <circle
-            stroke={filteredColors[index] ? filteredColors[index] : DEFAULT_COLORS[index]}
+            key={`${value}-${index}-circle`}
+            stroke={filteredColors[index] || DEFAULT_COLORS[index]}
             strokeWidth={strokeWidth}
             r={(diameter - strokeWidth) / 2}
             cx={c}
@@ -157,7 +159,7 @@ export class DonutChart extends Component {
             d={this.describeArc(c, c, radius, startAngle, endAngle)}
             fill="rgb(0,0,0)"
             fillOpacity={0}
-            stroke={filteredColors[index] ? filteredColors[index] : DEFAULT_COLORS[index]}
+            stroke={filteredColors[index] || DEFAULT_COLORS[index]}
             strokeWidth={strokeWidth}
             width={r2}
             height={r2}
@@ -211,13 +213,14 @@ export class DonutChart extends Component {
 
   render() {
     const { turnOffValues } = this.state;
-    const { children, data, colors, labels } = this.props;
-    console.info("--> turnOffValues", turnOffValues);
+    const { children, data, colors, labels, style, precision } = this.props;
+
     return (
-      <div className={styles.donutChart}>
+      <div className={styles.donutChart} style={style}>
         {this.renderSVG()}
         {children}
         <Legend
+          precision={precision}
           data={data}
           colors={colors}
           labels={labels}

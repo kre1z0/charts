@@ -2,4 +2,10 @@
   display: flex;
   position: relative;
   align-items: center;
+  svg {
+    text {
+      font-size: 11px;
+      fill: #fff;
+    }
+  }
 }

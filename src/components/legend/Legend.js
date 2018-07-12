@@ -2,38 +2,40 @@ import React from "react";
 import PropTypes from "prop-types";
 import cn from "classnames";
 
+import { percentages } from "../../utils/number";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./Legend.scss";
 
-export const Item = ({ backgroundColor, label, onTurnOffValue, index, turnOffValues }) => {
-  const isContain = turnOffValues.some(_ => _ === index);
-
+export const Item = ({ backgroundColor, label, onTurnOffValue, index, isContain, percentages }) => {
   return (
     <div
       className={cn(styles.item, { [styles.strike]: isContain })}
       onClick={() => onTurnOffValue(index)}
     >
-      <div
+      <span
         className={styles.colorBlock}
         style={{
           backgroundColor,
         }}
       />
-      <div className={styles.label}>{label}</div>
+      <span className={styles.value}>{percentages[index]}%</span>
+      <span className={styles.label}>{label}</span>
     </div>
   );
 };
 
-export const Legend = ({ data, colors, labels, onTurnOffValue, turnOffValues }) => {
+export const Legend = ({ data, colors, labels, onTurnOffValue, turnOffValues, precision }) => {
   return (
     <div className={styles.legend}>
       {data.map((value, index) => (
         <Item
+          percentages={percentages(data, precision)}
+          isContain={turnOffValues.some(_ => _ === index)}
           index={index}
           label={labels[index]}
           key={`${value}-${index}`}
-          backgroundColor={colors[index] ? colors[index] : DEFAULT_COLORS[index]}
+          backgroundColor={colors[index] || DEFAULT_COLORS[index]}
           onTurnOffValue={onTurnOffValue}
           turnOffValues={turnOffValues}
         />
