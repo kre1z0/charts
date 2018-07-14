@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 
-import BarChart from "../components/bar-chart/BarChart";
 import { DonutChart } from "../components/donut-chart/donut-chart";
+import { PieChart } from "../components/pie-chart/pie-chart";
 
 import styles from "./App.scss";
 
@@ -11,7 +11,7 @@ class App extends Component {
       <div className="app-container">
         <div className={styles.row}>
           <DonutChart
-            precision={1}
+            precision={2}
             svgChildren={
               <image
                 x="150"
@@ -27,10 +27,8 @@ class App extends Component {
             labels={["England", "Brazil", "Italy", "USA", "China", "Japan"]}
             style={{ marginTop: "2rem" }}
           />
+          <PieChart />
         </div>
-        {/*<div className="bar-1">*/}
-        {/*<BarChart data={[122, 144, 158, 56]} />*/}
-        {/*</div>*/}
       </div>
     );
   }

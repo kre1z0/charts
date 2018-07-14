@@ -7,7 +7,15 @@ import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./Legend.scss";
 
-export const Item = ({ backgroundColor, label, onTurnOffValue, index, isContain, percentages }) => {
+export const Item = ({
+  backgroundColor,
+  label,
+  onTurnOffValue,
+  index,
+  isContain,
+  precision,
+  percentages,
+}) => {
   return (
     <div
       className={cn(styles.item, { [styles.strike]: isContain })}
@@ -19,7 +27,7 @@ export const Item = ({ backgroundColor, label, onTurnOffValue, index, isContain,
           backgroundColor,
         }}
       />
-      <span className={styles.value}>{percentages[index]}%</span>
+      <span className={styles.value}>{parseFloat(percentages[index].toFixed(precision))}%</span>
       <span className={styles.label}>{label}</span>
     </div>
   );
@@ -30,7 +38,8 @@ export const Legend = ({ data, colors, labels, onTurnOffValue, turnOffValues, pr
     <div className={styles.legend}>
       {data.map((value, index) => (
         <Item
-          percentages={percentages(data, precision)}
+          precision={precision}
+          percentages={percentages(data)}
           isContain={turnOffValues.some(_ => _ === index)}
           index={index}
           label={labels[index]}

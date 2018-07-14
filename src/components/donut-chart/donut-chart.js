@@ -1,7 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from "prop-types";
 
-import { browser } from "../../utils/utils";
+import { Svg } from "../../components/svg/svg";
+import { Circle } from "../../components/svg/circle";
+import { types } from "../../default/types";
+import { props } from "../../default/props";
 import { Legend } from "../../components/legend/Legend";
 import { coordsFromAngle, convertValuesToDeg } from "../../utils/number";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
@@ -9,46 +11,9 @@ import { DEFAULT_COLORS } from "../../assets/theme/colors";
 import styles from "./donut-chart.scss";
 
 export class DonutChart extends Component {
-  static propTypes = {
-    data: PropTypes.arrayOf(PropTypes.number),
-    labels: PropTypes.arrayOf(PropTypes.string),
-    diameter: PropTypes.number,
-    strokeWidth: PropTypes.number,
-    colors: PropTypes.arrayOf(PropTypes.string),
-    fill: PropTypes.string,
-    responsive: PropTypes.bool,
-    tooltips: PropTypes.bool,
-    textProps: PropTypes.object,
-    precision: PropTypes.number,
-    tooltip: PropTypes.bool,
-    stroke: PropTypes.string,
-    style: PropTypes.object,
-  };
+  static propTypes = types;
 
-  static defaultProps = {
-    data: [60.74, 11.6, 10.4, 6.13, 3.49, 2.28, 1.4, 0.92, 0.73, 2.32],
-    labels: [
-      "Chrome",
-      "Opera",
-      "Firefox",
-      "Safari",
-      "Yandex Browser",
-      "IE",
-      "Android",
-      "Edge",
-      "Samsung Internet",
-      "Other",
-    ],
-    colors: DEFAULT_COLORS,
-    diameter: 200,
-    strokeWidth: 32,
-    fill: "transparent",
-    responsive: false,
-    tooltip: true,
-    textProps: {},
-    precision: 0,
-    stroke: "rgba(51, 51, 51, 0.2)",
-  };
+  static defaultProps = props;
 
   state = {
     turnOffValues: [],
@@ -82,17 +47,14 @@ export class DonutChart extends Component {
       data,
       colors,
       strokeWidth,
-      diameter,
+      size: diameter,
       fill,
       responsive,
       textProps,
       tooltip,
-      precision,
       stroke,
       svgChildren,
     } = this.props;
-
-    const isIE11 = browser === "IE 11";
 
     const size = diameter - strokeWidth;
 
@@ -133,13 +95,14 @@ export class DonutChart extends Component {
             alignmentBaseline="central"
             {...textProps}
           >
-            {filteredData[index].toFixed(precision)}
+            {filteredData[index]}
           </text>,
         );
 
       if (arrayHasOneItem) {
         paths.push(
-          <circle
+          <Circle
+            size={r2}
             key={`${value}-${index}-circle`}
             stroke={filteredColors[index] || DEFAULT_COLORS[index]}
             strokeWidth={strokeWidth}
@@ -147,9 +110,6 @@ export class DonutChart extends Component {
             cx={c}
             cy={c}
             fill={fill}
-            width={r2}
-            height={r2}
-            viewBox={[0, 0, r2, r2].join(" ")}
           />,
         );
       } else {
@@ -172,12 +132,7 @@ export class DonutChart extends Component {
     });
 
     return (
-      <svg
-        style={{ flex: isIE11 ? "0 1 auto" : "1 1" }}
-        width={responsive && !isIE11 ? "100%" : r2}
-        height={responsive && !isIE11 ? "100%" : r2}
-        viewBox={[0, 0, r2, r2].join(" ")}
-      >
+      <Svg size={r2} responsive={responsive}>
         <circle
           stroke={stroke}
           strokeWidth={strokeWidth}
@@ -192,7 +147,7 @@ export class DonutChart extends Component {
         {paths}
         {tooltips}
         {svgChildren}
-      </svg>
+      </Svg>
     );
   }
 

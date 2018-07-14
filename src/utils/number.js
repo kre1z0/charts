@@ -14,7 +14,7 @@ export const sum = values => values.reduce((a, b) => a + b, 0);
 export const convertValuesToDeg = values =>
   values.map(n => parseFloat(((360 * n) / sum(values)).toFixed(1)));
 
-export const percentages = (values, precision = 0) => {
+export const percentages = values => {
   const sumValues = sum(values);
-  return values.map(n => parseFloat(((n * 100) / sumValues).toFixed(precision)));
+  return values.map(n => (n * 100) / sumValues);
 };

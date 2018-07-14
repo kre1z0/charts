@@ -7,8 +7,9 @@
 /coverage
 
 # production
-/build
-
+build
+dist
+.idea
 # misc
 .DS_Store
 .env.local
@@ -18,7 +19,7 @@
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.idea
+
 storybook-static
 
 /src/**/*.css
