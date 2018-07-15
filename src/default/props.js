@@ -22,8 +22,9 @@ export const props = {
   tooltip: true,
   textProps: {},
   precision: 1,
-  stroke: "rgba(51, 51, 51, 0.2)",
   percentages: true,
   prefix: "%",
   interactiveLegend: true,
+  offset: 1,
+  offsetColor: "#fff",
 };

@@ -7,7 +7,7 @@ import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { Legend } from "../../components/legend/Legend";
 import { coordsFromAngle, convertValuesToDeg } from "../../utils/number";
-import { getRandomColor } from "../../utils/utils";
+import { getRandomColor, turnOffValue } from "../../utils/utils";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./donut-chart.scss";
@@ -54,7 +54,6 @@ export class DonutChart extends Component {
       responsive,
       textProps,
       tooltip,
-      stroke,
       svgChildren,
     } = this.props;
 
@@ -134,38 +133,12 @@ export class DonutChart extends Component {
 
     return (
       <Svg size={r2} responsive={responsive}>
-        <circle
-          stroke={stroke}
-          strokeWidth={strokeWidth}
-          r={(diameter - strokeWidth) / 2}
-          cx={c}
-          cy={c}
-          fill={fill}
-          width={r2}
-          height={r2}
-          viewBox={[0, 0, r2, r2].join(" ")}
-        />
         {paths}
         {tooltips}
         {svgChildren}
       </Svg>
     );
   }
-
-  onTurnOffValue = index => {
-    const { turnOffValues } = this.state;
-    const isContain = turnOffValues.some(value => value === index);
-
-    if (isContain) {
-      this.setState({
-        turnOffValues: turnOffValues.filter(value => value !== index),
-      });
-    } else {
-      this.setState({
-        turnOffValues: turnOffValues.concat(index),
-      });
-    }
-  };
 
   render() {
     const { turnOffValues } = this.state;
@@ -178,7 +151,7 @@ export class DonutChart extends Component {
         <Legend
           {...this.props}
           turnOffValues={turnOffValues}
-          onTurnOffValue={this.onTurnOffValue}
+          onTurnOffValue={index => this.setState(turnOffValue(index, turnOffValues))}
         />
       </div>
     );

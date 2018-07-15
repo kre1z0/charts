@@ -44,7 +44,7 @@ class App extends Component {
         </div>
         <h2>Pie charts</h2>
         <div className={styles.row}>
-          <PieChart precision={2} colors={randomColors(10)} labels={[]} />
+          <PieChart precision={2} colors={randomColors(10)} labels={[]} offset={0} />
           <PieChart
             percentages={false}
             prefix=""

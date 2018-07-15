@@ -6,11 +6,11 @@ import { props } from "../../default/props";
 import { Svg } from "../../components/svg/svg";
 import { Circle } from "../../components/svg/circle";
 import { Legend } from "../../components/legend/Legend";
-import { getRandomColor } from "../../utils/utils";
+import { getRandomColor, turnOffValue } from "../../utils/utils";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
+import { coordsFromAngle, calcRercentages } from "../../utils/number";
 
 import styles from "./pie-chart.scss";
-import { coordsFromAngle, calcRercentages } from "../../utils/number";
 
 export class PieChart extends Component {
   static propTypes = types;
@@ -84,7 +84,7 @@ export class PieChart extends Component {
 
   renderSVG = () => {
     const { turnOffValues } = this.state;
-    const { data, responsive, size, colors, textProps, tooltip } = this.props;
+    const { data, responsive, size, colors, textProps, tooltip, offset, offsetColor } = this.props;
 
     const paths = [];
     const tooltips = [];
@@ -131,6 +131,8 @@ export class PieChart extends Component {
           paths.push(
             <path
               key={`${percentage}-${index}`}
+              strokeWidth={offset}
+              stroke={offsetColor}
               fill={filteredColors[index] || DEFAULT_COLORS[index] || getRandomColor()}
               d={`M${L},${L} L${L},0 A${L},${L} 0 ${arcSweep},1 ${X}, ${Y} z`}
               transform={`rotate(${R}, ${L}, ${L})`}
@@ -148,21 +150,6 @@ export class PieChart extends Component {
     );
   };
 
-  onTurnOffValue = index => {
-    const { turnOffValues } = this.state;
-    const isContain = turnOffValues.some(value => value === index);
-
-    if (isContain) {
-      this.setState({
-        turnOffValues: turnOffValues.filter(value => value !== index),
-      });
-    } else {
-      this.setState({
-        turnOffValues: turnOffValues.concat(index),
-      });
-    }
-  };
-
   render() {
     const { turnOffValues } = this.state;
     const { style, className, children } = this.props;
@@ -174,7 +161,7 @@ export class PieChart extends Component {
         <Legend
           {...this.props}
           turnOffValues={turnOffValues}
-          onTurnOffValue={this.onTurnOffValue}
+          onTurnOffValue={index => this.setState(turnOffValue(index, turnOffValues))}
         />
       </div>
     );

@@ -5,7 +5,7 @@ import { browser } from "../../utils/utils";
 
 const isIE11 = browser === "IE 11";
 
-export const Svg = ({ children, responsive, size, offSet }) => {
+export const Svg = ({ children, responsive, size, offSet = 0 }) => {
   return (
     <svg
       style={{ flex: isIE11 ? "0 1 auto" : "1 1" }}

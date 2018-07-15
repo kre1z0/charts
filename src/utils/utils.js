@@ -23,3 +23,15 @@ export const getRandomColor = () => {
   }
   return color;
 };
+
+export const turnOffValue = (index, values) => {
+  const isContain = values.some(value => value === index);
+
+  if (isContain) {
+    return { turnOffValues: values.filter(value => value !== index) };
+  } else {
+    return {
+      turnOffValues: values.concat(index),
+    };
+  }
+};

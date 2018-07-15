@@ -12,11 +12,12 @@ export const types = {
   textProps: PropTypes.object,
   precision: PropTypes.number,
   tooltip: PropTypes.bool,
-  stroke: PropTypes.string,
   style: PropTypes.object,
   className: PropTypes.string,
   legendClassName: PropTypes.string,
   percentages: PropTypes.bool,
   prefix: PropTypes.string,
   interactiveLegend: PropTypes.bool,
+  offset: PropTypes.number,
+  offsetColor: PropTypes.string,
 };
