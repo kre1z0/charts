@@ -7,6 +7,7 @@ import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { Legend } from "../../components/legend/Legend";
 import { coordsFromAngle, convertValuesToDeg } from "../../utils/number";
+import { getRandomColor } from "../../utils/utils";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./donut-chart.scss";
@@ -104,7 +105,7 @@ export class DonutChart extends Component {
           <Circle
             size={r2}
             key={`${value}-${index}-circle`}
-            stroke={filteredColors[index] || DEFAULT_COLORS[index]}
+            stroke={filteredColors[index] || DEFAULT_COLORS[index] || getRandomColor()}
             strokeWidth={strokeWidth}
             r={(diameter - strokeWidth) / 2}
             cx={c}
@@ -119,7 +120,7 @@ export class DonutChart extends Component {
             d={this.describeArc(c, c, radius, startAngle, endAngle)}
             fill="rgb(0,0,0)"
             fillOpacity={0}
-            stroke={filteredColors[index] || DEFAULT_COLORS[index]}
+            stroke={filteredColors[index] || DEFAULT_COLORS[index] || getRandomColor()}
             strokeWidth={strokeWidth}
             width={r2}
             height={r2}

@@ -3,6 +3,7 @@ import cn from "classnames";
 
 import { types } from "../../default/types";
 import { calcRercentages } from "../../utils/number";
+import { getRandomColor } from "../../utils/utils";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./Legend.scss";
@@ -56,7 +57,7 @@ export const Legend = props => {
           index={index}
           label={labels[index]}
           key={`${value}-${index}`}
-          backgroundColor={colors[index] || DEFAULT_COLORS[index]}
+          backgroundColor={colors[index] || DEFAULT_COLORS[index] || getRandomColor()}
         />
       ))}
     </ul>

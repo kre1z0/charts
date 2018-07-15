@@ -1,14 +1,18 @@
 import React, { Component } from "react";
 
+import { getRandomColor } from "../utils/utils";
 import { DonutChart } from "../components/donut-chart/donut-chart";
 import { PieChart } from "../components/pie-chart/pie-chart";
 
 import styles from "./App.scss";
 
+const randomColors = length => Array.from({ length }, () => getRandomColor());
+
 class App extends Component {
   render() {
     return (
       <div className="app-container">
+        <h2>Donut charts</h2>
         <div className={styles.row}>
           <DonutChart
             size={300}
@@ -30,13 +34,32 @@ class App extends Component {
             }
           />
           <DonutChart
+            colors={randomColors(10)}
             prefix="GDP"
             data={[40096, 8727, 30507, 57436, 8643, 38917].sort((a, b) => b - a)}
             labels={["England", "Brazil", "Italy", "USA", "China", "Japan"]}
             percentages={false}
             interactiveLegend={false}
           />
-          <PieChart precision={2} />
+        </div>
+        <h2>Pie charts</h2>
+        <div className={styles.row}>
+          <PieChart precision={2} colors={randomColors(10)} labels={[]} />
+          <PieChart
+            percentages={false}
+            prefix=""
+            data={[5, 4, 4, 2, 2, 1, 1, 1]}
+            labels={[
+              "Brazil",
+              "Germany",
+              "Italy",
+              "Argentina",
+              "Uruguay",
+              "France",
+              "Spain",
+              "England",
+            ]}
+          />
         </div>
       </div>
     );

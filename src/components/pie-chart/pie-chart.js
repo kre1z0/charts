@@ -3,9 +3,10 @@ import cn from "classnames";
 
 import { types } from "../../default/types";
 import { props } from "../../default/props";
+import { Svg } from "../../components/svg/svg";
 import { Circle } from "../../components/svg/circle";
 import { Legend } from "../../components/legend/Legend";
-import { browser } from "../../utils/utils";
+import { getRandomColor } from "../../utils/utils";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./pie-chart.scss";
@@ -84,7 +85,6 @@ export class PieChart extends Component {
   renderSVG = () => {
     const { turnOffValues } = this.state;
     const { data, responsive, size, colors, textProps, tooltip } = this.props;
-    const isIE11 = browser === "IE 11";
 
     const paths = [];
     const tooltips = [];
@@ -124,14 +124,14 @@ export class PieChart extends Component {
               size={size}
               key={`${percentage}-${index}`}
               r={size / 2}
-              fill={filteredColors[index] || DEFAULT_COLORS[index]}
+              fill={filteredColors[index] || DEFAULT_COLORS[index] || getRandomColor()}
             />,
           );
         } else {
           paths.push(
             <path
               key={`${percentage}-${index}`}
-              fill={filteredColors[index] || DEFAULT_COLORS[index]}
+              fill={filteredColors[index] || DEFAULT_COLORS[index] || getRandomColor()}
               d={`M${L},${L} L${L},0 A${L},${L} 0 ${arcSweep},1 ${X}, ${Y} z`}
               transform={`rotate(${R}, ${L}, ${L})`}
             />,
@@ -141,15 +141,10 @@ export class PieChart extends Component {
     );
 
     return (
-      <svg
-        style={{ flex: isIE11 ? "0 1 auto" : "1 1" }}
-        width={responsive && !isIE11 ? "100%" : size}
-        height={responsive && !isIE11 ? "100%" : size}
-        viewBox={[0, 0, size, size].join(" ")}
-      >
+      <Svg size={size} responsive={responsive}>
         {paths}
         {tooltips}
-      </svg>
+      </Svg>
     );
   };
 
