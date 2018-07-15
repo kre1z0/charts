@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import cn from "classnames";
 
 import { types } from "../../default/types";
 import { props } from "../../default/props";
@@ -8,7 +9,7 @@ import { browser } from "../../utils/utils";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./pie-chart.scss";
-import { percentages } from "../../utils/number";
+import { coordsFromAngle, calcRercentages } from "../../utils/number";
 
 export class PieChart extends Component {
   static propTypes = types;
@@ -19,17 +20,16 @@ export class PieChart extends Component {
     turnOffValues: [],
   };
 
-  calculateSectors = () => {
-    const { turnOffValues } = this.state;
-    const { size, data } = this.props;
-
-    const filteredData = data.filter((_, index) => !turnOffValues.some(value => value === index));
-
+  calculateSectors = ({ data, size }) => {
     const sectors = [];
 
     const l = size / 2;
     let a = 0; // Angle
     let aRad = 0; // Angle in Rad
+    let startAngle = 0;
+    let endAngle = 0;
+    let centerPathAngle = 0;
+    let pathDeg = 0;
     let z = 0; // Size z
     let x = 0; // Side x
     let y = 0; // Side y
@@ -37,8 +37,12 @@ export class PieChart extends Component {
     let Y = 0; // SVG Y coordinate
     let R = 0; // Rotation
 
-    percentages(filteredData).forEach(percent => {
-      a = 360 * (percent / 100);
+    calcRercentages(data).forEach(percent => {
+      const angle = 360 * (percent / 100);
+      endAngle += angle;
+      pathDeg = endAngle - startAngle;
+      centerPathAngle = parseFloat((startAngle + pathDeg / 2).toFixed(1));
+      a = angle;
       let aCalc = a > 180 ? 360 - a : a;
       aRad = (aCalc * Math.PI) / 180;
       z = Math.sqrt(2 * l * l - 2 * l * l * Math.cos(aRad));
@@ -63,12 +67,14 @@ export class PieChart extends Component {
 
       sectors.push({
         arcSweep: arcSweep,
+        centerPathAngle,
+        pathDeg,
         L: l,
         X: X,
         Y: Y,
         R: R,
       });
-
+      startAngle += angle;
       R = R + a;
     });
 
@@ -77,38 +83,62 @@ export class PieChart extends Component {
 
   renderSVG = () => {
     const { turnOffValues } = this.state;
-    const { responsive, size, colors } = this.props;
+    const { data, responsive, size, colors, textProps, tooltip } = this.props;
     const isIE11 = browser === "IE 11";
 
     const paths = [];
+    const tooltips = [];
+
+    const filteredData = data.filter((_, index) => !turnOffValues.some(value => value === index));
 
     const filteredColors = colors.filter(
       (_, index) => !turnOffValues.some(value => value === index),
     );
 
-    this.calculateSectors().forEach(({ R, L, X, Y, percentage, arcSweep }, index, array) => {
-      const arrayHasOneItem = array.length === 1;
+    const textXOffset = size / 10;
 
-      if (arrayHasOneItem) {
-        paths.push(
-          <Circle
-            size={size}
-            key={`${percentage}-${index}`}
-            r={size / 2}
-            fill={filteredColors[index] || DEFAULT_COLORS[index]}
-          />,
-        );
-      } else {
-        paths.push(
-          <path
-            key={`${percentage}-${index}`}
-            fill={filteredColors[index] || DEFAULT_COLORS[index]}
-            d={`M${L},${L} L${L},0 A${L},${L} 0 ${arcSweep},1 ${X}, ${Y} z`}
-            transform={`rotate(${R}, ${L}, ${L})`}
-          />,
-        );
-      }
-    });
+    this.calculateSectors({ data: filteredData, size }).forEach(
+      ({ R, L, X, Y, percentage, arcSweep, centerPathAngle, pathDeg }, index, array) => {
+        const arrayHasOneItem = array.length === 1;
+
+        const { x, y } = coordsFromAngle(centerPathAngle, L, L - textXOffset);
+
+        tooltip &&
+          pathDeg > 9 &&
+          tooltips.push(
+            <text
+              key={`${percentage}-${index}-text`}
+              textAnchor="middle"
+              alignmentBaseline="central"
+              x={x}
+              y={arrayHasOneItem ? coordsFromAngle(0, L, L - textXOffset).y : y}
+              {...textProps}
+            >
+              {filteredData[index]}
+            </text>,
+          );
+
+        if (arrayHasOneItem) {
+          paths.push(
+            <Circle
+              size={size}
+              key={`${percentage}-${index}`}
+              r={size / 2}
+              fill={filteredColors[index] || DEFAULT_COLORS[index]}
+            />,
+          );
+        } else {
+          paths.push(
+            <path
+              key={`${percentage}-${index}`}
+              fill={filteredColors[index] || DEFAULT_COLORS[index]}
+              d={`M${L},${L} L${L},0 A${L},${L} 0 ${arcSweep},1 ${X}, ${Y} z`}
+              transform={`rotate(${R}, ${L}, ${L})`}
+            />,
+          );
+        }
+      },
+    );
 
     return (
       <svg
@@ -118,6 +148,7 @@ export class PieChart extends Component {
         viewBox={[0, 0, size, size].join(" ")}
       >
         {paths}
+        {tooltips}
       </svg>
     );
   };
@@ -139,16 +170,14 @@ export class PieChart extends Component {
 
   render() {
     const { turnOffValues } = this.state;
-    const { data, colors, labels, style, precision } = this.props;
+    const { style, className, children } = this.props;
 
     return (
-      <div className={styles.pieChart} style={style}>
+      <div className={cn(styles.pieChart, className)} style={style}>
         {this.renderSVG()}
+        {children}
         <Legend
-          precision={precision}
-          data={data}
-          colors={colors}
-          labels={labels}
+          {...this.props}
           turnOffValues={turnOffValues}
           onTurnOffValue={this.onTurnOffValue}
         />

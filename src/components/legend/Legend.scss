@@ -4,17 +4,20 @@
   justify-content: center;
   align-items: flex-start;
   padding-left: 20px;
+  margin: 0;
 }
 
 .item {
   display: flex;
   align-items: center;
   position: relative;
-  cursor: pointer;
   transition: all 200ms ease;
   margin-bottom: 10px;
   &:last-child {
     margin-bottom: 0;
+  }
+  &.interactiveLegend {
+    cursor: pointer;
   }
 }
 

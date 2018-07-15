@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import cn from "classnames";
 
 import { Svg } from "../../components/svg/svg";
 import { Circle } from "../../components/svg/circle";
@@ -77,7 +78,6 @@ export class DonutChart extends Component {
       endAngle += value;
 
       const pathDeg = endAngle - startAngle;
-
       const centerPathAngle = parseFloat((startAngle + pathDeg / 2).toFixed(1));
 
       const arrayHasOneItem = array.length === 1;
@@ -168,17 +168,14 @@ export class DonutChart extends Component {
 
   render() {
     const { turnOffValues } = this.state;
-    const { children, data, colors, labels, style, precision } = this.props;
+    const { children, style, className } = this.props;
 
     return (
-      <div className={styles.donutChart} style={style}>
+      <div className={cn(styles.donutChart, className)} style={style}>
         {this.renderSVG()}
         {children}
         <Legend
-          precision={precision}
-          data={data}
-          colors={colors}
-          labels={labels}
+          {...this.props}
           turnOffValues={turnOffValues}
           onTurnOffValue={this.onTurnOffValue}
         />

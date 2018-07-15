@@ -85,6 +85,7 @@ module.exports = {
       },
     }),
     new HTMLPlugin({
+      inject: true,
       title: "React charts",
       template,
       minify: true,

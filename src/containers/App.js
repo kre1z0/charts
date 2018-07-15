@@ -11,7 +11,14 @@ class App extends Component {
       <div className="app-container">
         <div className={styles.row}>
           <DonutChart
+            size={300}
+            strokeWidth={44}
             precision={2}
+            textProps={{
+              style: {
+                fontSize: 14,
+              },
+            }}
             svgChildren={
               <image
                 x="150"
@@ -23,11 +30,13 @@ class App extends Component {
             }
           />
           <DonutChart
-            data={[40096, 8727, 30507, 57436, 8643, 38917]}
+            prefix="GDP"
+            data={[40096, 8727, 30507, 57436, 8643, 38917].sort((a, b) => b - a)}
             labels={["England", "Brazil", "Italy", "USA", "China", "Japan"]}
-            style={{ marginTop: "2rem" }}
+            percentages={false}
+            interactiveLegend={false}
           />
-          <PieChart />
+          <PieChart precision={2} />
         </div>
       </div>
     );

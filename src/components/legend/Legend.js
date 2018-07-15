@@ -1,11 +1,13 @@
 import React from "react";
-import PropTypes from "prop-types";
 import cn from "classnames";
 
-import { percentages } from "../../utils/number";
+import { types } from "../../default/types";
+import { calcRercentages } from "../../utils/number";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./Legend.scss";
+
+const Prefix = ({ prefix }) => <span>{prefix}</span>;
 
 export const Item = ({
   backgroundColor,
@@ -14,12 +16,18 @@ export const Item = ({
   index,
   isContain,
   precision,
+  data,
   percentages,
+  prefix,
+  interactiveLegend,
 }) => {
   return (
-    <div
-      className={cn(styles.item, { [styles.strike]: isContain })}
-      onClick={() => onTurnOffValue(index)}
+    <li
+      className={cn(styles.item, {
+        [styles.strike]: isContain,
+        [styles.interactiveLegend]: interactiveLegend,
+      })}
+      onClick={interactiveLegend ? () => onTurnOffValue(index) : null}
     >
       <span
         className={styles.colorBlock}
@@ -27,36 +35,32 @@ export const Item = ({
           backgroundColor,
         }}
       />
-      <span className={styles.value}>{parseFloat(percentages[index].toFixed(precision))}%</span>
+      <span className={styles.value}>
+        {parseFloat(data[index].toFixed(precision))}
+        <Prefix prefix={prefix} />
+      </span>
       <span className={styles.label}>{label}</span>
-    </div>
+    </li>
   );
 };
 
-export const Legend = ({ data, colors, labels, onTurnOffValue, turnOffValues, precision }) => {
+export const Legend = props => {
+  const { data, percentages, turnOffValues, labels, colors, legendClassName } = props;
   return (
-    <div className={styles.legend}>
+    <ul className={cn(styles.legend, legendClassName)}>
       {data.map((value, index) => (
         <Item
-          precision={precision}
-          percentages={percentages(data)}
+          {...props}
+          data={percentages ? calcRercentages(data) : data}
           isContain={turnOffValues.some(_ => _ === index)}
           index={index}
           label={labels[index]}
           key={`${value}-${index}`}
           backgroundColor={colors[index] || DEFAULT_COLORS[index]}
-          onTurnOffValue={onTurnOffValue}
-          turnOffValues={turnOffValues}
         />
       ))}
-    </div>
+    </ul>
   );
 };
 
-Legend.propTypes = {
-  data: PropTypes.arrayOf(PropTypes.number),
-  colors: PropTypes.arrayOf(PropTypes.string),
-  labels: PropTypes.arrayOf(PropTypes.string),
-  onTurnOffValue: PropTypes.func,
-  turnOffValues: PropTypes.arrayOf(PropTypes.number),
-};
+Legend.propTypes = types;

@@ -8,7 +8,7 @@ const { entry, dist, root } = require("./paths");
 module.exports = merge(common, {
   entry: [entry],
   output: {
-    publicPath: "/",
+    publicPath: "./",
   },
   devtool: "source-map",
   plugins: [
