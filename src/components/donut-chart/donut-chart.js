@@ -121,9 +121,6 @@ export class DonutChart extends Component {
             fillOpacity={0}
             stroke={filteredColors[index] || DEFAULT_COLORS[index] || getRandomColor()}
             strokeWidth={strokeWidth}
-            width={r2}
-            height={r2}
-            viewBox={[0, 0, r2, r2].join(" ")}
           />,
         );
       }
