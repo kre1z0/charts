@@ -24,7 +24,6 @@ const presets = [
 const plugins = [
   ["babel-plugin-styled-components", { displayName: isDev, ssr: true }],
   "transform-object-assign",
-  "react-hot-loader/babel",
   "@babel/plugin-syntax-dynamic-import",
   "@babel/plugin-transform-runtime",
   "loadable-components/babel",

@@ -18,6 +18,16 @@ export const types = {
   percentages: PropTypes.bool,
   prefix: PropTypes.string,
   interactiveLegend: PropTypes.bool,
+  // pie
   offset: PropTypes.number,
   offsetColor: PropTypes.string,
+  // bar
+  multiColors: PropTypes.bool,
+  yMinTicks: PropTypes.number,
+  xScaleHeight: PropTypes.number,
+  containerClassName: PropTypes.string,
+  tickColor: PropTypes.string,
+  barContainerWidth: PropTypes.number,
+  barWidth: PropTypes.number,
+  firsTickHidden: PropTypes.bool,
 };

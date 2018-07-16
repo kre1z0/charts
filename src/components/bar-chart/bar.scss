@@ -1,0 +1,30 @@
+.barContainer {
+  border-right: 1px solid;
+  position: relative;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  &:last-child {
+    border-right: none;
+  }
+}
+
+.bar {
+  width: 92%;
+  min-height: 1px;
+}
+
+.label {
+  text-align: center;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: normal;
+  left: 0;
+  bottom: 0;
+  position: absolute;
+  transform: translateY(100%);
+}

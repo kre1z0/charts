@@ -18,3 +18,7 @@ export const calcRercentages = values => {
   const sumValues = sum(values);
   return values.map(n => (n * 100) / sumValues);
 };
+
+export const calcRercentagesFromMaxValue = (values, max) => {
+  return values.map(n => (n * 100) / max);
+};

@@ -1,3 +1,5 @@
+import ceil from "lodash/ceil";
+
 export const browser = (() => {
   let ua = navigator.userAgent,
     tem,
@@ -34,4 +36,22 @@ export const turnOffValue = (index, values) => {
       turnOffValues: values.concat(index),
     };
   }
+};
+
+export const getScaleTicks = (data, yMinTicks) => {
+  const max = Math.max(...data);
+
+  const ticks = [0];
+  let value = 0;
+
+  const ceiled = ceil(max / (yMinTicks - 1));
+  const length = ceiled.toString().length;
+  const tickValue = ceil(ceiled, -length + 2);
+
+  Array.from({ length: yMinTicks - 1 }, () => {
+    value += tickValue;
+    ticks.push(value);
+  });
+
+  return ticks.reverse();
 };

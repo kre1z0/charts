@@ -25,6 +25,15 @@ export const props = {
   percentages: true,
   prefix: "%",
   interactiveLegend: true,
+  // pie
   offset: 1,
   offsetColor: "#fff",
+  // bar
+  multiColors: false,
+  yMinTicks: 5,
+  xScaleHeight: 40,
+  tickColor: "#dce1e6",
+  barContainerWidth: 65,
+  barWidth: 30,
+  firsTickHidden: true,
 };
