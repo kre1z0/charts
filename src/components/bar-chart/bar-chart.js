@@ -29,6 +29,7 @@ export class BarChart extends Component {
 
   render() {
     const {
+      height,
       style,
       className,
       data,
@@ -52,13 +53,14 @@ export class BarChart extends Component {
         className={cn(styles.barChart, className)}
         style={{
           marginBottom: xScaleHeight,
+          width: responsive ? "100%" : "auto",
           ...style,
         }}
       >
         <YScale {...this.props} ticks={ticks} topValue={topValue} />
         <div
           className={cn(styles.container, containerClassName)}
-          style={{ borderColor: tickColor }}
+          style={{ borderColor: tickColor, height, width: responsive ? "100%" : "auto" }}
         >
           {ticks.map((tick, index) => (
             <Tick
@@ -73,6 +75,7 @@ export class BarChart extends Component {
             return (
               <Bar
                 {...this.props}
+                tooltipValue={data[index]}
                 topValue={topValue}
                 index={index}
                 barContainerWidth={responsive ? `${100 / data.length}%` : barContainerWidth}

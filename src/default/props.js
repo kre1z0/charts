@@ -29,11 +29,13 @@ export const props = {
   offset: 1,
   offsetColor: "#fff",
   // bar
+  height: 200,
   multiColors: false,
   yMinTicks: 5,
   xScaleHeight: 40,
   tickColor: "#dce1e6",
   barContainerWidth: 65,
   barWidth: 30,
+  tooltipHeight: 20,
   firsTickHidden: true,
 };

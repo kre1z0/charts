@@ -64,7 +64,7 @@ class App extends Component {
         {/*</div>*/}
         <h2>Bar charts</h2>
         <div className={styles.row}>
-          <div style={{ marginBottom: 40 }}>
+          <div style={{ marginBottom: 40, width: "100%" }}>
             <BarChart
               data={[122, 443, 324, 33, 454, 545, 234, 590, 444, 122, 322, 555]}
               colors={["rgba(100, 199, 108, 0.5)"]}

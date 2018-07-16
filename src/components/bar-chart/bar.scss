@@ -12,8 +12,22 @@
 }
 
 .bar {
+  text-align: center;
   width: 92%;
   min-height: 1px;
+}
+
+.tooltip {
+  font-size: 11px;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tooltipAboveBar {
+  color: #333333;
+  transform: translateY(-100%);
 }
 
 .label {

@@ -22,6 +22,8 @@ export const types = {
   offset: PropTypes.number,
   offsetColor: PropTypes.string,
   // bar
+  height: PropTypes.number,
+  tooltipHeight: PropTypes.number,
   multiColors: PropTypes.bool,
   yMinTicks: PropTypes.number,
   xScaleHeight: PropTypes.number,

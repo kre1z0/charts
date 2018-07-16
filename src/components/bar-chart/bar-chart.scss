@@ -1,11 +1,9 @@
 .barChart {
-  display: flex;
-  width: 100%;
+  display: inline-flex;
 }
 
 .container {
   position: relative;
-  height: 200px;
   width: 100%;
   display: flex;
   border-right: 1px solid;
