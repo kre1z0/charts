@@ -20,6 +20,7 @@ export const props = {
   fill: "transparent",
   responsive: false,
   tooltip: true,
+  tooltipPrefix: "",
   textProps: {},
   precision: 1,
   percentages: true,
@@ -29,6 +30,7 @@ export const props = {
   offset: 1,
   offsetColor: "#fff",
   // bar
+  interactiveBars: false,
   height: 200,
   multiColors: false,
   yMinTicks: 5,

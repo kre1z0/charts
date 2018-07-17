@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { getRandomColor } from "../utils/utils";
+import { getRandomColor } from "../utils/color";
 import { DonutChart } from "../components/donut-chart/donut-chart";
 import { PieChart } from "../components/pie-chart/pie-chart";
 import { BarChart } from "../components/bar-chart/bar-chart";
@@ -13,6 +13,8 @@ class App extends Component {
   render() {
     return (
       <div className="app-container">
+        <h1>syr</h1>
+        description
         {/*<h2>Donut charts</h2>*/}
         {/*<div className={styles.row}>*/}
         {/*<DonutChart*/}
@@ -66,13 +68,15 @@ class App extends Component {
         <div className={styles.row}>
           <div style={{ marginBottom: 40, width: "100%" }}>
             <BarChart
+              interactiveBars
+              tooltip={false}
               data={[122, 443, 324, 33, 454, 545, 234, 590, 444, 122, 322, 555]}
-              colors={["rgba(100, 199, 108, 0.5)"]}
+              colors={["#64c76c"]}
               labels={"Янв.Фев.Мар.Апр.Май.Июн.Июл.Авг.Сен.Окт.Ноя.Дек".split(".")}
             />
           </div>
           <div style={{ marginBottom: 40, width: "100%" }}>
-            <BarChart responsive multiColors firsTickHidden={false} />
+            <BarChart responsive multiColors firsTickHidden={false} tooltipPrefix="%" />
           </div>
         </div>
       </div>

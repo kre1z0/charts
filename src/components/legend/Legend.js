@@ -3,7 +3,7 @@ import cn from "classnames";
 
 import { types } from "../../default/types";
 import { calcRercentages } from "../../utils/number";
-import { getRandomColor } from "../../utils/utils";
+import { getRandomColor } from "../../utils/color";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./Legend.scss";
@@ -46,9 +46,9 @@ export const Item = ({
 };
 
 export const Legend = props => {
-  const { data, percentages, turnOffValues, labels, colors, legendClassName } = props;
+  const { data, percentages, turnOffValues, labels, colors } = props;
   return (
-    <ul className={cn(styles.legend, legendClassName)}>
+    <ul className={styles.legend}>
       {data.map((value, index) => (
         <Item
           {...props}

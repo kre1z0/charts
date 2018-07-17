@@ -7,7 +7,8 @@ import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { Legend } from "../../components/legend/Legend";
 import { coordsFromAngle, convertValuesToDeg } from "../../utils/number";
-import { getRandomColor, turnOffValue } from "../../utils/utils";
+import { turnOffValue } from "../../utils/utils";
+import { getRandomColor } from "../../utils/color";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 
 import styles from "./donut-chart.scss";

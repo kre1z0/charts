@@ -6,7 +6,8 @@ import { props } from "../../default/props";
 import { Svg } from "../../components/svg/svg";
 import { Circle } from "../../components/svg/circle";
 import { Legend } from "../../components/legend/Legend";
-import { getRandomColor, turnOffValue } from "../../utils/utils";
+import { turnOffValue } from "../../utils/utils";
+import { getRandomColor } from "../../utils/color";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 import { coordsFromAngle, calcRercentages } from "../../utils/number";
 

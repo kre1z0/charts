@@ -12,9 +12,42 @@
 }
 
 .bar {
+  position: relative;
   text-align: center;
   width: 92%;
   min-height: 1px;
+  &:hover {
+    .interactiveTooltip {
+      opacity: 1;
+      transform: translate(-50%, -100%) scale(1);
+    }
+  }
+}
+
+.interactiveBars {
+  cursor: pointer;
+}
+
+.interactiveTooltip {
+  opacity: 0;
+  font-size: 11px;
+  color: #fff;
+  top: -10px;
+  left: 50%;
+  position: absolute;
+  padding: 4px 8px;
+  transform: translate(-50%, -100%) scale(0);
+  border-radius: 6px;
+  transition: all 200ms ease;
+}
+
+.triangle {
+  position: absolute;
+  bottom: 1px;
+  left: 50%;
+  transform: translate(-50%, 100%);
+  border: 6px solid transparent;
+  border-top: 6px solid;
 }
 
 .tooltip {
@@ -31,6 +64,7 @@
 }
 
 .label {
+  color: #9da3aa;
   text-align: center;
   width: 100%;
   display: flex;

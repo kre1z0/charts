@@ -1,3 +1,13 @@
+.barChartContainer {
+  display: flex;
+}
+
+.overflow {
+  width: 100%;
+  flex: 1;
+  overflow-x: auto;
+}
+
 .barChart {
   display: inline-flex;
 }
