@@ -7,6 +7,8 @@ export const getRandomColor = () => {
   return color;
 };
 
+export const getRandomColors = length => Array.from({ length }, () => getRandomColor());
+
 export const hexToRGBA = (hex, alpha = 1) => {
   let c;
   if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {

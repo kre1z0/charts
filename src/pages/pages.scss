@@ -1,0 +1,14 @@
+.kappa {
+  width: auto;
+  height: 65%;
+  animation: rotation 8s infinite linear;
+}
+
+@-webkit-keyframes rotation {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}
