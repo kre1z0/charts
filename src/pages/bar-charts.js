@@ -5,7 +5,6 @@ import { BarChart } from "../components/bar-chart/bar-chart";
 export const BarCharts = () => {
   return (
     <div>
-      <h2>Bar charts</h2>
       <div style={{ marginBottom: 40, width: "100%" }}>
         <BarChart
           interactiveBars

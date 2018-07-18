@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import cn from "classnames";
 
+import { donut } from "../../utils/const";
 import { Svg } from "../../components/svg/svg";
 import { Circle } from "../../components/svg/circle";
 import { types } from "../../default/types";
@@ -143,7 +144,7 @@ export class DonutChart extends Component {
     const { children, style, className } = this.props;
 
     return (
-      <div className={cn(styles.donutChart, className)} style={style}>
+      <div className={cn(styles.donutChart, className, donut)} style={style}>
         {this.renderSVG()}
         {children}
         <Legend

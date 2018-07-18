@@ -3,13 +3,13 @@
   position: relative;
   display: flex;
   align-items: center;
+  margin-bottom: 40px;
 }
 
 .logo {
   cursor: pointer;
   display: flex;
   align-items: center;
-  width: 120px;
   margin: 0;
   position: absolute;
   top: 50%;
@@ -27,6 +27,9 @@
 
 .nav {
   margin: 0 auto;
+  @media (max-width: 700px) {
+    margin: 0 0 0 auto;
+  }
   a {
     position: relative;
     display: inline-block;

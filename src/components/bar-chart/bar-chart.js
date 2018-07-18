@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 
-import { prefix } from "../../utils/const";
+import { bar } from "../../utils/const";
 import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { calcRercentagesFromMaxValue } from "../../utils/number";
@@ -49,7 +49,7 @@ export class BarChart extends Component {
     const topValue = 100 / (ticks.length - 1);
 
     return (
-      <div className={cn(styles.barChartContainer, className)}>
+      <div className={cn(styles.barChartContainer, className, bar)}>
         <YScale {...this.props} ticks={ticks} topValue={topValue} />
         <div className={styles.overflow}>
           <div

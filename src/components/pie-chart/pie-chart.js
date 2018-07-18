@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import cn from "classnames";
 
+import { pie } from "../../utils/const";
 import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { Svg } from "../../components/svg/svg";
@@ -156,7 +157,7 @@ export class PieChart extends Component {
     const { style, className, children } = this.props;
 
     return (
-      <div className={cn(styles.pieChart, className)} style={style}>
+      <div className={cn(styles.pieChart, className, pie)} style={style}>
         {this.renderSVG()}
         {children}
         <Legend
