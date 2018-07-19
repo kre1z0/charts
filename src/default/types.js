@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 
 export const types = {
-  data: PropTypes.arrayOf(PropTypes.number),
+  data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.number])),
   labels: PropTypes.arrayOf(PropTypes.string),
   diameter: PropTypes.number,
   strokeWidth: PropTypes.number,
@@ -31,5 +31,4 @@ export const types = {
   tickColor: PropTypes.string,
   barContainerWidth: PropTypes.number,
   barWidth: PropTypes.number,
-  firsTickHidden: PropTypes.bool,
 };

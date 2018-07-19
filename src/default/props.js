@@ -39,5 +39,4 @@ export const props = {
   barContainerWidth: 65,
   barWidth: 30,
   tooltipHeight: 20,
-  firsTickHidden: true,
 };

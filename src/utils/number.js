@@ -20,5 +20,19 @@ export const calcRercentages = values => {
 };
 
 export const calcRercentagesFromMaxValue = (values, max) => {
-  return values.map(n => (n * 100) / max);
+  const newData = [];
+  if (Array.isArray(values[0])) {
+    values.forEach(data => {
+      data.forEach((n, i) => {
+        if (newData[i]) {
+          newData[i].push((n * 100) / max);
+        } else {
+          newData.push([(n * 100) / max]);
+        }
+      });
+    });
+  } else {
+    values.forEach(n => newData.push((n * 100) / max));
+  }
+  return newData;
 };

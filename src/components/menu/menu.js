@@ -10,7 +10,7 @@ const MENU = [
   {
     label: "Bar",
     route: "/",
-    isActive: props => props.location.pathname === "/",
+    isActive: props => props.location.pathname === "/" || props.location.pathname === "/charts/",
   },
   {
     label: "Donut",
@@ -30,7 +30,7 @@ class Menu extends Component {
       <header className={styles.header}>
         <div className={styles.logo} onClick={() => this.props.history.push("/")}>
           <img src={cheesecake} alt="cheesecake" />
-          <h1>Syrnikjs</h1>
+          <h1>Syrnik.js</h1>
         </div>
         <nav className={styles.nav}>
           {MENU.map(({ label, route, isActive }, index) => (

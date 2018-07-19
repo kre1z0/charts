@@ -1,4 +1,5 @@
 import ceil from "lodash/ceil";
+import { sum } from "./number";
 
 export const browser = (() => {
   let ua = navigator.userAgent,
@@ -30,7 +31,23 @@ export const turnOffValue = (index, values) => {
 };
 
 export const getScaleTicks = (data, yMinTicks) => {
-  const max = Math.max(...data);
+  let max = 0;
+  if (Array.isArray(data[0])) {
+    const newData = [];
+    data.forEach(stuck => {
+      stuck.forEach((n, i) => {
+        if (newData[i]) {
+          newData[i].push(n);
+          max = Math.max(max, sum(newData[i]));
+        } else {
+          newData.push([n]);
+          max = Math.max(max, n);
+        }
+      });
+    });
+  } else {
+    max = Math.max(...data);
+  }
 
   const ticks = [0];
   let value = 0;
@@ -39,7 +56,7 @@ export const getScaleTicks = (data, yMinTicks) => {
   const length = ceiled.toString().length;
   const tickValue = ceil(ceiled, -length + 2);
 
-  Array.from({ length: yMinTicks - 1 }, () => {
+  Array.from({ length: yMinTicks }, () => {
     value += tickValue;
     ticks.push(value);
   });

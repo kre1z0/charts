@@ -2,11 +2,11 @@ import React from "react";
 
 import styles from "./y-scale.scss";
 
-export const YScale = ({ ticks, tickColor, topValue, firsTickHidden, height }) => {
+export const YScale = ({ ticks, tickColor, topValue, height }) => {
   return (
     <div className={styles.yScale} style={{ borderColor: tickColor, height }}>
       {ticks.map((tick, index) => {
-        if (firsTickHidden && index === 0) return null;
+        if (index === 0) return null;
         return (
           <div
             key={`${index}-${tick}`}

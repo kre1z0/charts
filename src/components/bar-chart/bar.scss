@@ -16,13 +16,8 @@
   text-align: center;
   width: 92%;
   min-height: 1px;
-  &:hover {
-    .interactiveTooltip {
-      opacity: 1;
-      transform: translate(-50%, -100%) scale(1);
-    }
-  }
 }
+
 
 .interactiveBars {
   cursor: pointer;
@@ -39,6 +34,17 @@
   transform: translate(-50%, -100%) scale(0);
   border-radius: 6px;
   transition: all 200ms ease;
+}
+
+.selected {
+  .interactiveTooltip {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+  }
+  .multiTooltip {
+    opacity: 1;
+    transform: translate(-50%, -100%) scale(1);
+  }
 }
 
 .triangle {
@@ -75,4 +81,43 @@
   bottom: 0;
   position: absolute;
   transform: translateY(100%);
+}
+
+.multiTooltip {
+  opacity: 0;
+  font-size: 11px;
+  color: #fff;
+  top: -10px;
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -100%) scale(0);
+  border-radius: 6px;
+  transition: all 200ms ease;
+}
+
+.multiTooltipItem {
+  padding: 4px 8px;
+  &:first-child {
+    border-radius: 6px 6px 0 0;
+  }
+  &:last-child {
+    border-radius: 0 0 6px 6px;
+  }
+}
+
+.stackBar {
+  border-right: 1px solid;
+  height: 100%;
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: flex-end;
+  &:last-child {
+    border-right: none;
+  }
+  .barContainer {
+    border-right: none;
+    height: auto;
+  }
 }
