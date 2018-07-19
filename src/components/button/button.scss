@@ -1,0 +1,15 @@
+.button {
+  display: inline-block;
+  transition: all 200ms ease;
+  cursor: pointer;
+  background-color: #fff;
+  padding: 7px 14px;
+  outline: none;
+  border: 1px solid #333;
+  &:hover {
+    background-color: #fbf10f;
+  }
+  &:active {
+    box-shadow: inset 0 0 4px rgba(51,51,51, 0.4);
+  }
+}

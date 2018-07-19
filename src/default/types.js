@@ -14,6 +14,7 @@ export const types = {
   tooltip: PropTypes.bool,
   style: PropTypes.object,
   className: PropTypes.string,
+  classNamePrefix: PropTypes.string,
   percentages: PropTypes.bool,
   prefix: PropTypes.string,
   interactiveLegend: PropTypes.bool,

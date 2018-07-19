@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import cn from "classnames";
 
-import { pie } from "../../utils/const";
+import { donut, pie } from "../../utils/const";
 import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { Svg } from "../../components/svg/svg";
@@ -162,6 +162,7 @@ export class PieChart extends Component {
         {children}
         <Legend
           {...this.props}
+          classNamePrefix={pie}
           turnOffValues={turnOffValues}
           onTurnOffValue={index => this.setState(turnOffValue(index, turnOffValues))}
         />

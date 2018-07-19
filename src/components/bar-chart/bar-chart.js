@@ -60,7 +60,7 @@ export class BarChart extends Component {
 
     return (
       <div className={cn(styles.barChartContainer, className, bar)}>
-        <YScale {...this.props} ticks={ticks} topValue={topValue} />
+        <YScale {...this.props} ticks={ticks} topValue={topValue} classNamePrefix={bar} />
         <div className={styles.overflow}>
           <div
             className={styles.barChart}
@@ -100,7 +100,7 @@ export class BarChart extends Component {
                       className={barStyles.stackBar}
                       style={{ borderColor: tickColor }}
                     >
-                      {value.map((item, i) => {
+                      {value.map((item, i, array) => {
                         return (
                           <Bar
                             {...this.props}
@@ -108,7 +108,7 @@ export class BarChart extends Component {
                             stacked={value.length > 1}
                             multiStackTooltip={
                               value.length > 1 &&
-                              i === 0 && (
+                              i === array.length - 1 && (
                                 <MultiTooltip
                                   colors={value.map(
                                     (_, i) => colors[i] || DEFAULT_COLORS[i] || getRandomColor(),

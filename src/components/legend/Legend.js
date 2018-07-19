@@ -21,38 +21,40 @@ export const Item = ({
   percentages,
   prefix,
   interactiveLegend,
+  classNamePrefix,
 }) => {
   return (
     <li
-      className={cn(styles.item, {
+      className={cn(styles.item, `${classNamePrefix}-legend-item`, {
         [styles.strike]: isContain,
         [styles.interactiveLegend]: interactiveLegend,
       })}
       onClick={interactiveLegend ? () => onTurnOffValue(index) : null}
     >
       <span
-        className={styles.colorBlock}
+        className={cn(styles.colorBlock, `${classNamePrefix}-legend-color-block`)}
         style={{
           backgroundColor,
         }}
       />
-      <span className={styles.value}>
+      <span className={cn(styles.value, `${classNamePrefix}-legend-value`)}>
         {parseFloat(data[index].toFixed(precision))}
         <Prefix prefix={prefix} />
       </span>
-      <span className={styles.label}>{label}</span>
+      <span className={cn(styles.label, `${classNamePrefix}-legend-label`)}>{label}</span>
     </li>
   );
 };
 
 export const Legend = props => {
-  const { data, percentages, turnOffValues, labels, colors } = props;
+  const { data, percentages, turnOffValues, labels, colors, prefix, classNamePrefix } = props;
   return (
-    <ul className={styles.legend}>
+    <ul className={cn(styles.legend, `${classNamePrefix}-legend`)}>
       {data.map((value, index) => (
         <Item
           {...props}
           data={percentages ? calcRercentages(data) : data}
+          prefix={percentages && prefix}
           isContain={turnOffValues.some(_ => _ === index)}
           index={index}
           label={labels[index]}

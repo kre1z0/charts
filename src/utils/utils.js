@@ -1,5 +1,5 @@
 import ceil from "lodash/ceil";
-import { sum } from "./number";
+import { sum, getRandomInt } from "./number";
 
 export const browser = (() => {
   let ua = navigator.userAgent,
@@ -62,4 +62,14 @@ export const getScaleTicks = (data, yMinTicks) => {
   });
 
   return ticks.reverse();
+};
+
+export const getRandomData = ({ length, min = 0, max = 100, stackedLength }) => {
+  if (stackedLength) {
+    return Array.from({ length: stackedLength }).map(() => {
+      return Array.from({ length }).map(() => getRandomInt(min, max));
+    });
+  } else {
+    return Array.from({ length }).map(() => getRandomInt(min, max));
+  }
 };

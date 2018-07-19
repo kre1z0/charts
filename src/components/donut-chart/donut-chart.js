@@ -149,6 +149,7 @@ export class DonutChart extends Component {
         {children}
         <Legend
           {...this.props}
+          classNamePrefix={donut}
           turnOffValues={turnOffValues}
           onTurnOffValue={index => this.setState(turnOffValue(index, turnOffValues))}
         />

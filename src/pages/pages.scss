@@ -16,10 +16,18 @@
 .row {
   display: flex;
   flex-wrap: wrap;
-  > div {
+  justify-content: space-around;
+  justify-content: space-evenly;
+  .chart {
     margin: 0 40px 40px 0;
     &:last-child {
       margin: 0 0 40px 0;
+    }
+    :global {
+      .syrnikjs-donut-chart-legend,
+      .syrnikjs-pie-chart-legend {
+        width: 240px;
+      }
     }
   }
 }

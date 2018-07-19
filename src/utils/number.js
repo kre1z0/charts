@@ -36,3 +36,5 @@ export const calcRercentagesFromMaxValue = (values, max) => {
   }
   return newData;
 };
+
+export const getRandomInt = (min, max) => Math.floor(Math.random() * (max - min)) + min;
