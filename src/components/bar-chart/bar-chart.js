@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import cn from "classnames";
 
 import { bar } from "../../utils/const";
 import { types } from "../../default/types";
@@ -6,23 +7,13 @@ import { props } from "../../default/props";
 import { calcRercentagesFromMaxValue } from "../../utils/number";
 import { getScaleTicks } from "../../utils/utils";
 import { YScale } from "../../components/y-scale/y-scale";
+import { Tick } from "../../components/common/common";
 import { Bar, Label, MultiTooltip } from "./bar";
 
 import styles from "./bar-chart.scss";
 import barStyles from "./bar.scss";
-import cn from "classnames";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 import { getRandomColor } from "../../utils/color";
-
-const Tick = ({ topValue, index, tickColor }) => {
-  if (index === 0) return null;
-  return (
-    <div
-      className={styles.tick}
-      style={{ top: `${topValue * index}%`, backgroundColor: tickColor }}
-    />
-  );
-};
 
 export class BarChart extends Component {
   static propTypes = types;

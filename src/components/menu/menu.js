@@ -22,6 +22,11 @@ const MENU = [
     route: "/pie-charts",
     isActive: props => props.location.pathname.includes("/pie-charts"),
   },
+  {
+    label: "Line",
+    route: "/line-charts",
+    isActive: props => props.location.pathname.includes("/line-charts"),
+  },
 ];
 
 class Menu extends Component {
