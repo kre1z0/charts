@@ -1,4 +1,4 @@
-.tick {
+.horizontalTick {
   position: absolute;
   right: 0;
   display: flex;
@@ -7,4 +7,10 @@
   width: 100%;
   line-height: normal;
   padding-right: 10px;
+}
+
+
+.verticalTick {
+  width: 1px;
+  position: absolute;
 }

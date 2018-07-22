@@ -5,7 +5,7 @@ import { line } from "../../utils/const";
 import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { getScaleTicks } from "../../utils/utils";
-import { Tick } from "../../components/common/common";
+import { HorizontalTick, VerticalTick } from "../../components/common/common";
 import { YScale } from "../../components/y-scale/y-scale";
 import { Svg } from "../../components/svg/svg";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
@@ -13,6 +13,14 @@ import { getRandomColor } from "../../utils/color";
 import { calcRercentagesFromMaxValue } from "../../utils/number";
 
 import styles from "./line-chart.scss";
+
+const Label = ({ label, left, width, height }) => {
+  return (
+    <div className={styles.label} style={{ width, left, height }}>
+      {label}
+    </div>
+  );
+};
 
 export class LineChart extends Component {
   static propTypes = types;
@@ -31,81 +39,37 @@ export class LineChart extends Component {
       colors,
       centering,
     } = this.props;
-    const width = data.length * sectionWidth;
-    console.info("--> values <--", data);
+    const length = centering ? data.length : data.length - 1;
+    const width = length ? length * sectionWidth : sectionWidth;
 
     const ticks = getScaleTicks(data, yMinTicks);
 
     const paths = [];
 
-    let x = centering ? -sectionWidth / 2 : 0;
+    let x = centering ? -sectionWidth / 2 : -sectionWidth;
     let y = 0;
-    let d = "";
 
     calcRercentagesFromMaxValue(data, ticks[0]).forEach((n, index) => {
-      console.info("***************************");
-      console.info("--> DATA <--", data[index]);
-      console.info("--> x", x);
-      console.info("--> y", y);
-      console.info("***************************");
       let d = "";
+      d += `M ${x},${index === 0 && !centering ? height - Math.ceil((height * n) / 100) : y}`;
+      x += sectionWidth;
+      y = height - Math.ceil((height * n) / 100);
+      d += `L ${x},${y}`;
 
-      if (index > 0 && centering) {
-        d += `M ${x},${y}`;
-        x += sectionWidth;
-        y = height - Math.ceil((height * n) / 100);
-        d += `L ${x},${y}`;
-        paths.push(
-          <path
-            key={`${n}-${index}-line-chart-path`}
-            d={d}
-            fill="rgb(0,0,0)"
-            fillOpacity={0}
-            stroke={colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
-            strokeWidth={lineWidth}
-          />,
-        );
-      } else {
-        d += `M ${centering ? x + sectionWidth : x},${
-          index === 0 ? height - Math.ceil((height * n) / 100) : y
-        }`;
-        x += Math.ceil(sectionWidth);
-        y = height - Math.ceil((height * n) / 100);
-        d += `L ${x},${y}`;
-        console.info("&&&&&&&&&", index);
-        paths.push(
-          <path
-            key={`${n}-${index}-line-chart-path`}
-            d={d}
-            fill="rgb(0,0,0)"
-            fillOpacity={0}
-            stroke={colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
-            strokeWidth={lineWidth}
-          />,
-        );
-      }
+      if (index === 0) return;
+      paths.push(
+        <path
+          key={`${n}-${index}-line-chart-path`}
+          d={d}
+          fill="rgb(0,0,0)"
+          fillOpacity={0}
+          stroke={colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
+          strokeWidth={lineWidth}
+        />,
+      );
     });
     return (
       <Svg width={width} height={height} responsive={responsive}>
-        {/*<path stroke="skyblue" strokeWidth={lineWidth} d="M 0,200 L 100,0" />*/}
-        {/*<circle cx="10" cy="10" r="2" fill="red" />*/}
-        {/*<path*/}
-        {/*key="line-chart-path"*/}
-        {/*// d={d}*/}
-        {/*d={`M 20,63 L 60,161 M 60,161 L 140,101`}*/}
-        {/*fill="rgb(0,0,0)"*/}
-        {/*fillOpacity={0}*/}
-        {/*stroke={colors[0] || DEFAULT_COLORS[0] || getRandomColor()}*/}
-        {/*strokeWidth={lineWidth}*/}
-        {/*/>*/}
-        {/*<path*/}
-        {/*key="line-chart-path-2"*/}
-        {/*d={d}*/}
-        {/*fill="rgb(0,0,0)"*/}
-        {/*fillOpacity={0}*/}
-        {/*stroke="green"*/}
-        {/*strokeWidth={lineWidth}*/}
-        {/*/>*/}
         {paths}
         {svgChildren}
       </Svg>
@@ -123,7 +87,12 @@ export class LineChart extends Component {
       xScaleHeight,
       tickColor,
       height,
+      sectionWidth,
+      labels,
+      yScaleWidth,
     } = this.props;
+
+    const h = height - xScaleHeight;
 
     const ticks = getScaleTicks(data, yMinTicks);
 
@@ -131,8 +100,14 @@ export class LineChart extends Component {
 
     return (
       <div className={cn(styles.lineChartContainer, className, line)}>
-        <YScale {...this.props} ticks={ticks} topValue={topValue} classNamePrefix={line} />
-        <div className={styles.overflow}>
+        <YScale
+          {...this.props}
+          height={h}
+          ticks={ticks}
+          topValue={topValue}
+          classNamePrefix={line}
+        />
+        <div className={styles.overflow} style={{ paddingLeft: yScaleWidth }}>
           <div
             className={styles.lineChart}
             style={{
@@ -143,16 +118,38 @@ export class LineChart extends Component {
           >
             <div
               className={styles.container}
-              style={{ borderColor: tickColor, height, width: responsive ? "100%" : "auto" }}
+              style={{ borderColor: tickColor, height: h, width: responsive ? "100%" : "auto" }}
             >
-              {ticks.map((tick, index) => (
-                <Tick
-                  key={`${tick}-${index}`}
-                  index={index}
-                  topValue={topValue}
-                  tickColor={tickColor}
-                />
-              ))}
+              {ticks.map(
+                (tick, index) =>
+                  index !== 0 && (
+                    <HorizontalTick
+                      key={`${tick}-${index}-horizontal`}
+                      top={topValue * index}
+                      tickColor={tickColor}
+                    />
+                  ),
+              )}
+              {data.map((value, index) => {
+                return (
+                  <div key={`${value}-${index}-vertical`}>
+                    {index !== 0 && (
+                      <VerticalTick
+                        left={index * sectionWidth}
+                        height={h}
+                        index={index}
+                        tickColor={tickColor}
+                      />
+                    )}
+                    <Label
+                      width={sectionWidth}
+                      label={labels[index]}
+                      left={index * sectionWidth}
+                      height={xScaleHeight}
+                    />
+                  </div>
+                );
+              })}
               {this.renderSVG()}
               {children}
             </div>

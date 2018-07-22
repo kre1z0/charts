@@ -21,9 +21,10 @@ export const types = {
   // pie
   offset: PropTypes.number,
   offsetColor: PropTypes.string,
-  // bar
+  // bar and line
   interactiveBars: PropTypes.bool,
   height: PropTypes.number,
+  yScaleWidth: PropTypes.number,
   tooltipPrefix: PropTypes.string,
   tooltipHeight: PropTypes.number,
   multiColors: PropTypes.bool,

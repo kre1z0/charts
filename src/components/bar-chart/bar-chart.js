@@ -7,7 +7,7 @@ import { props } from "../../default/props";
 import { calcRercentagesFromMaxValue } from "../../utils/number";
 import { getScaleTicks } from "../../utils/utils";
 import { YScale } from "../../components/y-scale/y-scale";
-import { Tick } from "../../components/common/common";
+import { HorizontalTick } from "../../components/common/common";
 import { Bar, Label, MultiTooltip } from "./bar";
 
 import styles from "./bar-chart.scss";
@@ -43,16 +43,24 @@ export class BarChart extends Component {
       xScaleHeight,
       labels,
       tooltipPrefix,
+      yScaleWidth,
     } = this.props;
 
     const ticks = getScaleTicks(data, yMinTicks);
+    const h = height - xScaleHeight;
 
     const topValue = 100 / (ticks.length - 1);
 
     return (
       <div className={cn(styles.barChartContainer, className, bar)}>
-        <YScale {...this.props} ticks={ticks} topValue={topValue} classNamePrefix={bar} />
-        <div className={styles.overflow}>
+        <YScale
+          {...this.props}
+          height={h}
+          ticks={ticks}
+          topValue={topValue}
+          classNamePrefix={bar}
+        />
+        <div className={styles.overflow} style={{ paddingLeft: yScaleWidth }}>
           <div
             className={styles.barChart}
             style={{
@@ -63,16 +71,18 @@ export class BarChart extends Component {
           >
             <div
               className={styles.container}
-              style={{ borderColor: tickColor, height, width: responsive ? "100%" : "auto" }}
+              style={{ borderColor: tickColor, height: h, width: responsive ? "100%" : "auto" }}
             >
-              {ticks.map((tick, index) => (
-                <Tick
-                  key={`${tick}-${index}`}
-                  index={index}
-                  topValue={topValue}
-                  tickColor={tickColor}
-                />
-              ))}
+              {ticks.map(
+                (tick, index) =>
+                  index !== 0 && (
+                    <HorizontalTick
+                      key={`${tick}-${index}`}
+                      top={topValue * index}
+                      tickColor={tickColor}
+                    />
+                  ),
+              )}
               {calcRercentagesFromMaxValue(data, ticks[0]).map((value, index) => {
                 const barProps = {
                   selected: hoveredIndex === index,
@@ -82,6 +92,7 @@ export class BarChart extends Component {
                     ? `${100 / data[index].length}%`
                     : barContainerWidth,
                   topValue: topValue,
+                  height: h,
                 };
 
                 if (Array.isArray(value)) {

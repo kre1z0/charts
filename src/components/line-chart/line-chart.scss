@@ -22,3 +22,10 @@
   border-right: 1px solid;
   border-bottom: 1px solid;
 }
+
+.label {
+  text-align: center;
+  transform: translateX(-50%);
+  position: absolute;
+  bottom: 0;
+}

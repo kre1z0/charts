@@ -32,6 +32,7 @@ export const props = {
   // bar and line
   interactiveBars: false,
   height: 200,
+  yScaleWidth: 70,
   multiColors: false,
   yMinTicks: 5,
   xScaleHeight: 40,
