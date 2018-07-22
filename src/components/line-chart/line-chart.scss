@@ -10,6 +10,9 @@
 
 .lineChart {
   display: inline-flex;
+  svg {
+    position: relative;
+  }
 }
 
 .container {

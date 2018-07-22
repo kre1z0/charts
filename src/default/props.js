@@ -29,7 +29,7 @@ export const props = {
   // pie
   offset: 1,
   offsetColor: "#fff",
-  // bar
+  // bar and line
   interactiveBars: false,
   height: 200,
   multiColors: false,
@@ -39,4 +39,8 @@ export const props = {
   barContainerWidth: 65,
   barWidth: 30,
   tooltipHeight: 20,
+  // line
+  lineWidth: 1,
+  sectionWidth: 60,
+  centering: false,
 };

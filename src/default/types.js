@@ -32,4 +32,8 @@ export const types = {
   tickColor: PropTypes.string,
   barContainerWidth: PropTypes.number,
   barWidth: PropTypes.number,
+  // line
+  lineWidth: PropTypes.number,
+  sectionWidth: PropTypes.number,
+  centering: PropTypes.bool,
 };
