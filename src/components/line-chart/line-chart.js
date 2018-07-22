@@ -52,10 +52,9 @@ export class LineChart extends Component {
 
       if (index > 0 && centering) {
         d += `M ${x},${y}`;
-        x += Math.ceil(sectionWidth);
+        x += sectionWidth;
         y = height - Math.ceil((height * n) / 100);
         d += `L ${x},${y}`;
-        console.info("&&&&&&&&&", index);
         paths.push(
           <path
             key={`${n}-${index}-line-chart-path`}
@@ -67,7 +66,9 @@ export class LineChart extends Component {
           />,
         );
       } else {
-        d += `M ${x},${index === 0 ? height - Math.ceil((height * n) / 100) : y}`;
+        d += `M ${centering ? x + sectionWidth : x},${
+          index === 0 ? height - Math.ceil((height * n) / 100) : y
+        }`;
         x += Math.ceil(sectionWidth);
         y = height - Math.ceil((height * n) / 100);
         d += `L ${x},${y}`;
