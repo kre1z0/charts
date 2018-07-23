@@ -10,10 +10,11 @@ import { YScale } from "../../components/y-scale/y-scale";
 import { HorizontalTick } from "../../components/common/common";
 import { Bar, Label, MultiTooltip } from "./bar";
 
-import styles from "./bar-chart.scss";
-import barStyles from "./bar.scss";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 import { getRandomColor } from "../../utils/color";
+
+import styles from "./bar-chart.scss";
+import barStyles from "./bar.scss";
 
 export class BarChart extends Component {
   static propTypes = types;
@@ -48,6 +49,13 @@ export class BarChart extends Component {
 
     const ticks = getScaleTicks(data, yMinTicks);
     const h = height - xScaleHeight;
+    const w = Array.isArray(data[0])
+      ? data.reduce((prev, curr) => {
+          if (curr.length > prev || prev.length) {
+            return curr.length;
+          } else return prev.length ? prev.length : prev;
+        }, 0) * barContainerWidth
+      : data.length * barContainerWidth;
 
     const topValue = 100 / (ticks.length - 1);
 
@@ -65,13 +73,13 @@ export class BarChart extends Component {
             className={styles.barChart}
             style={{
               marginBottom: xScaleHeight,
-              width: responsive ? "100%" : "auto",
+              width: responsive ? "100%" : w,
               ...style,
             }}
           >
             <div
               className={styles.container}
-              style={{ borderColor: tickColor, height: h, width: responsive ? "100%" : "auto" }}
+              style={{ borderColor: tickColor, height: h, width: responsive ? "100%" : w }}
             >
               {ticks.map(
                 (tick, index) =>

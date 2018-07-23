@@ -18,6 +18,8 @@ export const browser = (() => {
   return M.join(" ");
 })();
 
+export const isIE11 = browser === "IE 11";
+
 export const turnOffValue = (index, values) => {
   const isContain = values.some(value => value === index);
 

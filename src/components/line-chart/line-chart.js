@@ -38,22 +38,25 @@ export class LineChart extends Component {
       yMinTicks,
       colors,
       centering,
+      xScaleHeight,
     } = this.props;
     const length = centering ? data.length : data.length - 1;
     const width = length ? length * sectionWidth : sectionWidth;
+    const h = height - xScaleHeight;
 
     const ticks = getScaleTicks(data, yMinTicks);
 
     const paths = [];
+    const circles = [];
 
     let x = centering ? -sectionWidth / 2 : -sectionWidth;
     let y = 0;
 
     calcRercentagesFromMaxValue(data, ticks[0]).forEach((n, index) => {
       let d = "";
-      d += `M ${x},${index === 0 && !centering ? height - Math.ceil((height * n) / 100) : y}`;
+      d += `M ${x},${index === 0 && !centering ? h - Math.ceil((h * n) / 100) : y}`;
       x += sectionWidth;
-      y = height - Math.ceil((height * n) / 100);
+      y = h - Math.ceil((h * n) / 100);
       d += `L ${x},${y}`;
 
       if (index === 0) return;

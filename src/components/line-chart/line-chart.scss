@@ -24,8 +24,11 @@
 }
 
 .label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  transform: translateX(-50%);
+  transform: translate(-50%, 100%);
   position: absolute;
   bottom: 0;
 }

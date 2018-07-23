@@ -1,9 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
 
-import { browser } from "../../utils/utils";
-
-const isIE11 = browser === "IE 11";
+import { isIE11 } from "../../utils/utils";
 
 export const Svg = ({ children, responsive, size, width, height, offSet = 0, ...props }) => {
   const w = width || size;
