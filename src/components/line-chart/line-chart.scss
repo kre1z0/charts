@@ -1,5 +1,6 @@
 .lineChartContainer {
   display: flex;
+  position: relative;
 }
 
 .overflow {
@@ -23,6 +24,15 @@
   border-bottom: 1px solid;
 }
 
+.point {
+  cursor: pointer;
+  z-index: 2;
+  background-color: #fff;
+  border: solid green;
+  border-radius: 50%;
+  position: absolute;
+}
+
 .label {
   display: flex;
   align-items: center;
@@ -31,4 +41,8 @@
   transform: translate(-50%, 100%);
   position: absolute;
   bottom: 0;
+}
+
+.selected {
+  color: green;
 }

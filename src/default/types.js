@@ -37,4 +37,6 @@ export const types = {
   lineWidth: PropTypes.number,
   sectionWidth: PropTypes.number,
   centering: PropTypes.bool,
+  pointSize: PropTypes.number,
+  pointBorderwidth: PropTypes.number,
 };

@@ -44,4 +44,6 @@ export const props = {
   lineWidth: 1,
   sectionWidth: 60,
   centering: false,
+  pointSize: 10,
+  pointBorderwidth: 2,
 };

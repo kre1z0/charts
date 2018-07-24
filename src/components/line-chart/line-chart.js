@@ -14,11 +14,46 @@ import { calcRercentagesFromMaxValue } from "../../utils/number";
 
 import styles from "./line-chart.scss";
 
-const Label = ({ label, left, width, height }) => {
+const Label = ({ label, left, width, height, selected }) => {
   return (
-    <div className={styles.label} style={{ width, left, height }}>
+    <div
+      className={cn(styles.label, { [styles.selected]: selected })}
+      style={{
+        width,
+        left,
+        height,
+      }}
+    >
       {label}
     </div>
+  );
+};
+
+const Point = ({
+  pointSize,
+  pointBorderwidth,
+  left,
+  centering,
+  top,
+  onMouseLeave,
+  onMouseEnter,
+}) => {
+  const isNegative = !centering ? "-" : "";
+
+  return (
+    <div
+      className={styles.point}
+      onMouseLeave={onMouseLeave}
+      onMouseEnter={onMouseEnter}
+      style={{
+        width: pointSize,
+        height: pointSize,
+        borderWidth: pointBorderwidth,
+        left,
+        top,
+        transform: `translate(${isNegative}50%, -50%)`,
+      }}
+    />
   );
 };
 
@@ -27,10 +62,13 @@ export class LineChart extends Component {
 
   static defaultProps = props;
 
+  state = {
+    selectedIndex: null,
+  };
+
   renderSVG = () => {
     const {
       svgChildren,
-      responsive,
       height,
       data,
       sectionWidth,
@@ -47,7 +85,6 @@ export class LineChart extends Component {
     const ticks = getScaleTicks(data, yMinTicks);
 
     const paths = [];
-    const circles = [];
 
     let x = centering ? -sectionWidth / 2 : -sectionWidth;
     let y = 0;
@@ -72,7 +109,7 @@ export class LineChart extends Component {
       );
     });
     return (
-      <Svg width={width} height={height} responsive={responsive}>
+      <Svg width={width} height={height}>
         {paths}
         {svgChildren}
       </Svg>
@@ -86,20 +123,24 @@ export class LineChart extends Component {
       className,
       yMinTicks,
       style,
-      responsive,
       xScaleHeight,
       tickColor,
       height,
       sectionWidth,
       labels,
       yScaleWidth,
+      centering,
     } = this.props;
+
+    const { selectedIndex } = this.state;
 
     const h = height - xScaleHeight;
 
     const ticks = getScaleTicks(data, yMinTicks);
 
     const topValue = 100 / (ticks.length - 1);
+
+    const calculatedData = calcRercentagesFromMaxValue(data, ticks[0]);
 
     return (
       <div className={cn(styles.lineChartContainer, className, line)}>
@@ -115,14 +156,10 @@ export class LineChart extends Component {
             className={styles.lineChart}
             style={{
               marginBottom: xScaleHeight,
-              width: responsive ? "100%" : "auto",
               ...style,
             }}
           >
-            <div
-              className={styles.container}
-              style={{ borderColor: tickColor, height: h, width: responsive ? "100%" : "auto" }}
-            >
+            <div className={styles.container} style={{ borderColor: tickColor, height: h }}>
               {ticks.map(
                 (tick, index) =>
                   index !== 0 && (
@@ -134,6 +171,11 @@ export class LineChart extends Component {
                   ),
               )}
               {data.map((value, index) => {
+                const offset = centering ? yScaleWidth / 2 : 0;
+                const left = index * sectionWidth;
+                const pointleft = index * sectionWidth + offset;
+                const top = h - (calculatedData[index] * h) / 100;
+
                 return (
                   <div key={`${value}-${index}-vertical`}>
                     {index !== 0 && (
@@ -145,10 +187,21 @@ export class LineChart extends Component {
                       />
                     )}
                     <Label
+                      selected={selectedIndex === index}
                       width={sectionWidth}
                       label={labels[index]}
-                      left={index * sectionWidth}
+                      left={left}
                       height={xScaleHeight}
+                    />
+                    <Point
+                      key={`${value}-${index}-point`}
+                      {...this.props}
+                      onMouseEnter={selectedIndex => this.setState({ selectedIndex })}
+                      onMouseLeave={() => this.setState({ selectedIndex: null })}
+                      value={value}
+                      left={pointleft}
+                      top={top}
+                      centering={centering}
                     />
                   </div>
                 );
