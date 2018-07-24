@@ -5,7 +5,7 @@ import { line } from "../../utils/const";
 import { types } from "../../default/types";
 import { props } from "../../default/props";
 import { getScaleTicks } from "../../utils/utils";
-import { HorizontalTick, VerticalTick } from "../../components/common/common";
+import { HorizontalTick, VerticalTick, InteractiveTooltip } from "../../components/common/common";
 import { YScale } from "../../components/y-scale/y-scale";
 import { Svg } from "../../components/svg/svg";
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
@@ -37,6 +37,7 @@ const Point = ({
   top,
   onMouseLeave,
   onMouseEnter,
+  tooltip,
 }) => {
   const isNegative = !centering ? "-" : "";
 
@@ -53,7 +54,9 @@ const Point = ({
         top,
         transform: `translate(${isNegative}50%, -50%)`,
       }}
-    />
+    >
+      {tooltip}
+    </div>
   );
 };
 
@@ -130,6 +133,8 @@ export class LineChart extends Component {
       labels,
       yScaleWidth,
       centering,
+      colors,
+      tooltipPrefix,
     } = this.props;
 
     const { selectedIndex } = this.state;
@@ -196,12 +201,21 @@ export class LineChart extends Component {
                     <Point
                       key={`${value}-${index}-point`}
                       {...this.props}
-                      onMouseEnter={selectedIndex => this.setState({ selectedIndex })}
+                      onMouseEnter={() => this.setState({ selectedIndex: index })}
                       onMouseLeave={() => this.setState({ selectedIndex: null })}
                       value={value}
                       left={pointleft}
                       top={top}
                       centering={centering}
+                      tooltip={
+                        <InteractiveTooltip
+                          tooltipValue={data[index]}
+                          classNamePrefix={line}
+                          selected={index === selectedIndex}
+                          tooltipPrefix={tooltipPrefix}
+                          color={colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
+                        />
+                      }
                     />
                   </div>
                 );

@@ -37,26 +37,6 @@
   transition: all 200ms ease;
 }
 
-.selected {
-  .interactiveTooltip {
-    opacity: 1;
-    transform: translate(-50%, -100%) scale(1);
-  }
-  .multiTooltip {
-    opacity: 1;
-    transform: translate(-50%, -100%) scale(1);
-  }
-}
-
-.triangle {
-  position: absolute;
-  bottom: 1px;
-  left: 50%;
-  transform: translate(-50%, 100%);
-  border: 6px solid transparent;
-  border-top: 6px solid;
-}
-
 .tooltip {
   font-size: 11px;
   color: #fff;
@@ -82,29 +62,6 @@
   bottom: 0;
   position: absolute;
   transform: translateY(100%);
-}
-
-.multiTooltip {
-  pointer-events: none;
-  opacity: 0;
-  font-size: 11px;
-  color: #fff;
-  top: -10px;
-  left: 50%;
-  position: absolute;
-  transform: translate(-50%, -100%) scale(0);
-  border-radius: 6px;
-  transition: all 200ms ease;
-}
-
-.multiTooltipItem {
-  padding: 4px 8px;
-  &:first-child {
-    border-radius: 6px 6px 0 0;
-  }
-  &:last-child {
-    border-radius: 0 0 6px 6px;
-  }
 }
 
 .stackBar {

@@ -7,8 +7,8 @@ import { props } from "../../default/props";
 import { calcRercentagesFromMaxValue } from "../../utils/number";
 import { getScaleTicks } from "../../utils/utils";
 import { YScale } from "../../components/y-scale/y-scale";
-import { HorizontalTick } from "../../components/common/common";
-import { Bar, Label, MultiTooltip } from "./bar";
+import { HorizontalTick, MultiTooltip } from "../../components/common/common";
+import { Bar, Label } from "./bar";
 
 import { DEFAULT_COLORS } from "../../assets/theme/colors";
 import { getRandomColor } from "../../utils/color";
@@ -101,6 +101,7 @@ export class BarChart extends Component {
                     : barContainerWidth,
                   topValue: topValue,
                   height: h,
+                  classNamePrefix: bar,
                 };
 
                 if (Array.isArray(value)) {
@@ -120,6 +121,8 @@ export class BarChart extends Component {
                               value.length > 1 &&
                               i === array.length - 1 && (
                                 <MultiTooltip
+                                  classNamePrefix={bar}
+                                  selected={hoveredIndex === index}
                                   colors={value.map(
                                     (_, i) => colors[i] || DEFAULT_COLORS[i] || getRandomColor(),
                                   )}
