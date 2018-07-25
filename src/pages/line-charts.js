@@ -13,7 +13,7 @@ export class LineCharts extends Component {
       max: getRandomInt(0, 24000),
     }),
     data2: getRandomData({
-      length: 14,
+      length: 16,
       min: 0,
       max: getRandomInt(0, 24000),
     }),
@@ -49,11 +49,32 @@ export class LineCharts extends Component {
             data={data1}
             sectionWidth={90}
             centering={true}
-            labels={Array.from({ length: 14 }, (_, index) => 2004 + index)}
+            labels={Array.from({ length: 16 }, (_, index) => 2004 + index)}
           />
         </div>
         <div style={{ textAlign: "center", marginBottom: 40 }}>
-          <LineChart data={data2} sectionWidth={100} />
+          <LineChart
+            data={data2}
+            sectionWidth={100}
+            labels={[
+              "a",
+              "n",
+              "u",
+              "s",
+              " ",
+              "i",
+              "d",
+              "i",
+              " ",
+              "r",
+              "a",
+              "b",
+              "o",
+              "t",
+              "a",
+              "t",
+            ]}
+          />
         </div>
       </div>
     );

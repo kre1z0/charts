@@ -186,9 +186,9 @@ export class LineChart extends Component {
                 ),
             )}
             {data.map((value, index) => {
-              const offset = centering ? yScaleWidth / 2 : index === 0 ? pointSize / 2 : 0;
+              const offsetLeft = centering ? yScaleWidth / 2 : index === 0 ? pointSize / 2 : 0;
               const left = index * sectionWidth;
-              const pointleft = index * sectionWidth + offset;
+              const pointleft = index * sectionWidth + offsetLeft;
               const top = h - (calculatedData[index] * h) / 100;
 
               return (

@@ -68,7 +68,7 @@ export class BarChart extends Component {
           topValue={topValue}
           classNamePrefix={bar}
         />
-        <div className={styles.overflow} style={{ paddingLeft: yScaleWidth }}>
+        <div className={styles.overflow}>
           <div
             className={styles.barChart}
             style={{
