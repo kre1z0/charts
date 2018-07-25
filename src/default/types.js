@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 
 export const types = {
   data: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.array, PropTypes.number])),
-  labels: PropTypes.arrayOf(PropTypes.string),
+  labels: PropTypes.arrayOf(PropTypes.oneOfType([PropTypes.string, PropTypes.number])),
   diameter: PropTypes.number,
   strokeWidth: PropTypes.number,
   colors: PropTypes.arrayOf(PropTypes.string),

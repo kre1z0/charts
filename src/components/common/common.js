@@ -17,17 +17,22 @@ export const InteractiveTooltip = ({
   tooltipPrefix,
   selected,
   classNamePrefix,
+  index,
+  centering,
 }) => {
+  const rightPosition = index === 0 && !centering;
+  const borderColor = rightPosition ? { borderRightColor: color } : { borderTopColor: color };
   return (
     <div
       className={cn(styles.interactiveTooltip, {
         [styles.selected]: selected,
+        [styles.right]: rightPosition,
         [`${classNamePrefix}-active-single`]: selected,
       })}
       style={{ backgroundColor: color }}
     >
       {`${tooltipValue}${tooltipPrefix}`}
-      <div className={styles.triangle} style={{ borderTopColor: color }} />
+      <div className={styles.triangle} style={{ ...borderColor }} />
     </div>
   );
 };

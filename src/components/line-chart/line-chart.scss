@@ -1,19 +1,13 @@
 .lineChartContainer {
   display: flex;
   position: relative;
-}
-
-.overflow {
-  width: 100%;
-  flex: 1;
-  overflow-x: auto;
-}
-
-.lineChart {
-  display: inline-flex;
   svg {
     position: relative;
   }
+}
+
+.overflow {
+  overflow-x: auto;
 }
 
 .container {
@@ -26,7 +20,7 @@
 
 .point {
   cursor: pointer;
-  z-index: 2;
+  z-index: 1;
   background-color: #fff;
   border: solid green;
   border-radius: 50%;
@@ -34,6 +28,7 @@
 }
 
 .label {
+  color: #9da3aa;
   display: flex;
   align-items: center;
   justify-content: center;

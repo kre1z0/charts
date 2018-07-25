@@ -4,7 +4,7 @@ import cn from "classnames";
 import { line } from "../../utils/const";
 import { types } from "../../default/types";
 import { props } from "../../default/props";
-import { getScaleTicks } from "../../utils/utils";
+import { getScaleTicks, isIE11 } from "../../utils/utils";
 import { HorizontalTick, VerticalTick, InteractiveTooltip } from "../../components/common/common";
 import { YScale } from "../../components/y-scale/y-scale";
 import { Svg } from "../../components/svg/svg";
@@ -14,7 +14,7 @@ import { calcRercentagesFromMaxValue } from "../../utils/number";
 
 import styles from "./line-chart.scss";
 
-const Label = ({ label, left, width, height, selected }) => {
+const Label = ({ label, left, width, height, selected, centering, index }) => {
   return (
     <div
       className={cn(styles.label, { [styles.selected]: selected })}
@@ -22,6 +22,8 @@ const Label = ({ label, left, width, height, selected }) => {
         width,
         left,
         height,
+        transform: `translate(${centering || index === 0 ? "0" : "-50%"}, 100%)`,
+        justifyContent: !centering && index === 0 && "flex-start",
       }}
     >
       {label}
@@ -81,6 +83,7 @@ export class LineChart extends Component {
       centering,
       xScaleHeight,
     } = this.props;
+
     const length = centering ? data.length : data.length - 1;
     const width = length ? length * sectionWidth : sectionWidth;
     const h = height - xScaleHeight;
@@ -135,11 +138,16 @@ export class LineChart extends Component {
       centering,
       colors,
       tooltipPrefix,
+      pointSize,
     } = this.props;
 
     const { selectedIndex } = this.state;
 
     const h = height - xScaleHeight;
+
+    const length = centering ? data.length : data.length - 1;
+
+    const width = (length ? length : 1) * sectionWidth;
 
     const ticks = getScaleTicks(data, yMinTicks);
 
@@ -156,73 +164,78 @@ export class LineChart extends Component {
           topValue={topValue}
           classNamePrefix={line}
         />
-        <div className={styles.overflow} style={{ paddingLeft: yScaleWidth }}>
+        <div className={styles.overflow} style={{ width: width + sectionWidth / (isIE11 ? 1 : 2) }}>
           <div
-            className={styles.lineChart}
+            className={styles.container}
             style={{
+              borderRight: centering || data.length === 1 ? "1px solid" : "none",
+              borderColor: tickColor,
+              height: h,
+              width,
               marginBottom: xScaleHeight,
-              ...style,
             }}
           >
-            <div className={styles.container} style={{ borderColor: tickColor, height: h }}>
-              {ticks.map(
-                (tick, index) =>
-                  index !== 0 && (
-                    <HorizontalTick
-                      key={`${tick}-${index}-horizontal`}
-                      top={topValue * index}
+            {ticks.map(
+              (tick, index) =>
+                index !== 0 && (
+                  <HorizontalTick
+                    key={`${tick}-${index}-horizontal`}
+                    top={topValue * index}
+                    tickColor={tickColor}
+                  />
+                ),
+            )}
+            {data.map((value, index) => {
+              const offset = centering ? yScaleWidth / 2 : index === 0 ? pointSize / 2 : 0;
+              const left = index * sectionWidth;
+              const pointleft = index * sectionWidth + offset;
+              const top = h - (calculatedData[index] * h) / 100;
+
+              return (
+                <div key={`${value}-${index}-vertical`}>
+                  {index !== 0 && (
+                    <VerticalTick
+                      left={index * sectionWidth}
+                      height={h}
+                      index={index}
                       tickColor={tickColor}
                     />
-                  ),
-              )}
-              {data.map((value, index) => {
-                const offset = centering ? yScaleWidth / 2 : 0;
-                const left = index * sectionWidth;
-                const pointleft = index * sectionWidth + offset;
-                const top = h - (calculatedData[index] * h) / 100;
-
-                return (
-                  <div key={`${value}-${index}-vertical`}>
-                    {index !== 0 && (
-                      <VerticalTick
-                        left={index * sectionWidth}
-                        height={h}
+                  )}
+                  <Label
+                    index={index}
+                    centering={centering}
+                    selected={selectedIndex === index}
+                    width={sectionWidth}
+                    label={labels[index]}
+                    left={left}
+                    height={xScaleHeight}
+                  />
+                  <Point
+                    key={`${value}-${index}-point`}
+                    {...this.props}
+                    onMouseEnter={() => this.setState({ selectedIndex: index })}
+                    onMouseLeave={() => this.setState({ selectedIndex: null })}
+                    value={value}
+                    left={pointleft}
+                    top={top}
+                    centering={centering}
+                    tooltip={
+                      <InteractiveTooltip
+                        centering={centering}
                         index={index}
-                        tickColor={tickColor}
+                        tooltipValue={data[index]}
+                        classNamePrefix={line}
+                        selected={index === selectedIndex}
+                        tooltipPrefix={tooltipPrefix}
+                        color={colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
                       />
-                    )}
-                    <Label
-                      selected={selectedIndex === index}
-                      width={sectionWidth}
-                      label={labels[index]}
-                      left={left}
-                      height={xScaleHeight}
-                    />
-                    <Point
-                      key={`${value}-${index}-point`}
-                      {...this.props}
-                      onMouseEnter={() => this.setState({ selectedIndex: index })}
-                      onMouseLeave={() => this.setState({ selectedIndex: null })}
-                      value={value}
-                      left={pointleft}
-                      top={top}
-                      centering={centering}
-                      tooltip={
-                        <InteractiveTooltip
-                          tooltipValue={data[index]}
-                          classNamePrefix={line}
-                          selected={index === selectedIndex}
-                          tooltipPrefix={tooltipPrefix}
-                          color={colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
-                        />
-                      }
-                    />
-                  </div>
-                );
-              })}
-              {this.renderSVG()}
-              {children}
-            </div>
+                    }
+                  />
+                </div>
+              );
+            })}
+            {this.renderSVG()}
+            {children}
           </div>
         </div>
       </div>

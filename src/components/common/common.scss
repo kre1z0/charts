@@ -16,19 +16,29 @@
 }
 
 .interactiveTooltip {
-  z-index: 2;
   pointer-events: none;
   opacity: 0;
   font-size: 11px;
   color: #fff;
-  top: -10px;
+  top: -8px;
   left: 50%;
   position: absolute;
   padding: 4px 8px;
   transform: translate(-50%, -100%) scale(0);
   border-radius: 6px;
   transition: all 200ms ease;
+  &.right {
+    transform: translate(15px, 0) scale(0);
+    .triangle {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translate(-100%, -50%);
+      border-right: 6px solid;
+    }
+  }
 }
+
 
 .triangle {
   position: absolute;
@@ -66,4 +76,7 @@
 .selected {
   opacity: 1;
   transform: translate(-50%, -100%) scale(1);
+  &.right {
+    transform: translate(15px, 0) scale(1);
+  }
 }
