@@ -47,15 +47,16 @@ export class LineCharts extends Component {
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <LineChart
             data={data1}
-            sectionWidth={90}
             centering={true}
             labels={Array.from({ length: 16 }, (_, index) => 2004 + index)}
           />
         </div>
         <div style={{ textAlign: "center", marginBottom: 40 }}>
           <LineChart
+            trapezoid
+            trapezeFill="rgba(231, 76, 60, 0.4)"
             data={data2}
-            sectionWidth={100}
+            // sectionWidth={100}
             labels={[
               "a",
               "n",

@@ -46,4 +46,6 @@ export const props = {
   centering: false,
   pointSize: 10,
   pointBorderwidth: 2,
+  trapezoid: false,
+  trapezeStrokeWidth: 0,
 };

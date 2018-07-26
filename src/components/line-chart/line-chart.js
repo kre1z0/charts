@@ -82,6 +82,10 @@ export class LineChart extends Component {
       colors,
       centering,
       xScaleHeight,
+      trapezoid,
+      trapezeFill,
+      trapezeStroke,
+      trapezeStrokeWidth,
     } = this.props;
 
     const length = centering ? data.length : data.length - 1;
@@ -91,18 +95,24 @@ export class LineChart extends Component {
     const ticks = getScaleTicks(data, yMinTicks);
 
     const paths = [];
+    const trapezoidArray = [];
 
     let x = centering ? -sectionWidth / 2 : -sectionWidth;
     let y = 0;
 
     calcRercentagesFromMaxValue(data, ticks[0]).forEach((n, index) => {
+      let backGroundPath = "";
       let d = "";
       d += `M ${x},${index === 0 && !centering ? h - Math.ceil((h * n) / 100) : y}`;
+      backGroundPath += `M ${x},${index === 0 && !centering ? h - Math.ceil((h * n) / 100) : y}`;
+      backGroundPath += ` L ${x},${h}`;
       x += sectionWidth;
+      backGroundPath += ` L ${x},${h}`;
       y = h - Math.ceil((h * n) / 100);
       d += `L ${x},${y}`;
-
+      backGroundPath += ` L ${x},${y} z`;
       if (index === 0) return;
+
       paths.push(
         <path
           key={`${n}-${index}-line-chart-path`}
@@ -113,10 +123,22 @@ export class LineChart extends Component {
           strokeWidth={lineWidth}
         />,
       );
+      trapezoid &&
+        trapezoidArray.push(
+          <path
+            key={`${n}-${index}-line-chart-bg-path`}
+            d={backGroundPath}
+            fill={trapezeFill || colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
+            fillOpacity={1}
+            stroke={trapezeStroke || colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
+            strokeWidth={trapezeStrokeWidth}
+          />,
+        );
     });
     return (
       <Svg width={width} height={height}>
         {paths}
+        {trapezoidArray}
         {svgChildren}
       </Svg>
     );
@@ -156,7 +178,7 @@ export class LineChart extends Component {
     const calculatedData = calcRercentagesFromMaxValue(data, ticks[0]);
 
     return (
-      <div className={cn(styles.lineChartContainer, className, line)}>
+      <div className={cn(styles.lineChartContainer, className, line)} style={style}>
         <YScale
           {...this.props}
           height={h}
@@ -186,7 +208,12 @@ export class LineChart extends Component {
                 ),
             )}
             {data.map((value, index) => {
-              const offsetLeft = centering ? yScaleWidth / 2 : index === 0 ? pointSize / 2 : 0;
+              const offsetLeft = centering
+                ? sectionWidth / 2 - pointSize
+                : index === 0
+                  ? pointSize / 2
+                  : 0;
+
               const left = index * sectionWidth;
               const pointleft = index * sectionWidth + offsetLeft;
               const top = h - (calculatedData[index] * h) / 100;
