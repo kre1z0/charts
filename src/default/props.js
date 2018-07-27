@@ -45,7 +45,8 @@ export const props = {
   sectionWidth: 60,
   centering: false,
   pointSize: 10,
-  pointBorderwidth: 2,
+  pointBorderWidth: 2,
+  pointBorderColor: "#64c76c",
   trapezoid: false,
   trapezeStrokeWidth: 0,
 };

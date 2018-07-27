@@ -33,13 +33,14 @@ const Label = ({ label, left, width, height, selected, centering, index }) => {
 
 const Point = ({
   pointSize,
-  pointBorderwidth,
+  pointBorderWidth,
   left,
   centering,
-  top,
+  bottom,
   onMouseLeave,
   onMouseEnter,
   tooltip,
+  pointBorderColor,
 }) => {
   const isNegative = !centering ? "-" : "";
 
@@ -51,10 +52,11 @@ const Point = ({
       style={{
         width: pointSize,
         height: pointSize,
-        borderWidth: pointBorderwidth,
+        borderWidth: pointSize === 0 ? 0 : pointBorderWidth,
         left,
-        top,
-        transform: `translate(${isNegative}50%, -50%)`,
+        bottom,
+        borderColor: pointBorderColor,
+        transform: `translate(${isNegative}50%, 50%)`,
       }}
     >
       {tooltip}
@@ -84,8 +86,8 @@ export class LineChart extends Component {
       xScaleHeight,
       trapezoid,
       trapezeFill,
-      trapezeStroke,
       trapezeStrokeWidth,
+      trapezeStrokeColor,
     } = this.props;
 
     const length = centering ? data.length : data.length - 1;
@@ -130,7 +132,7 @@ export class LineChart extends Component {
             d={backGroundPath}
             fill={trapezeFill || colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
             fillOpacity={1}
-            stroke={trapezeStroke || colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
+            stroke={trapezeStrokeColor || colors[0] || DEFAULT_COLORS[0] || getRandomColor()}
             strokeWidth={trapezeStrokeWidth}
           />,
         );
@@ -156,7 +158,6 @@ export class LineChart extends Component {
       height,
       sectionWidth,
       labels,
-      yScaleWidth,
       centering,
       colors,
       tooltipPrefix,
@@ -216,7 +217,7 @@ export class LineChart extends Component {
 
               const left = index * sectionWidth;
               const pointleft = index * sectionWidth + offsetLeft;
-              const top = h - (calculatedData[index] * h) / 100;
+              const bottom = (calculatedData[index] * h) / 100;
 
               return (
                 <div key={`${value}-${index}-vertical`}>
@@ -244,7 +245,7 @@ export class LineChart extends Component {
                     onMouseLeave={() => this.setState({ selectedIndex: null })}
                     value={value}
                     left={pointleft}
-                    top={top}
+                    bottom={bottom}
                     centering={centering}
                     tooltip={
                       <InteractiveTooltip

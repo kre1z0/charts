@@ -38,9 +38,10 @@ export const types = {
   sectionWidth: PropTypes.number,
   centering: PropTypes.bool,
   pointSize: PropTypes.number,
-  pointBorderwidth: PropTypes.number,
+  pointBorderWidth: PropTypes.number,
+  pointBorderColor: PropTypes.string,
   trapezoid: PropTypes.bool,
   trapezeStrokeWidth: PropTypes.number,
+  trapezeStrokeColor: PropTypes.string,
   trapezeFill: PropTypes.string,
-  trapezeStroke: PropTypes.string,
 };

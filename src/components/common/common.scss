@@ -78,5 +78,8 @@
   transform: translate(-50%, -100%) scale(1);
   &.right {
     transform: translate(15px, 0) scale(1);
+    .triangle {
+      border-top-color: transparent;
+    }
   }
 }
